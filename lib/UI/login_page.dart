@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  Future<void> login() async {
+  Future<void> _login() async {
     setState(() {
       responseLoading = true;
     });
@@ -237,11 +237,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   child: TextButton(
                     onPressed: () async {
-                      tfFocusNode.unfocus();
-                      tfFocusNode2.unfocus();
+                      FocusScope.of(context).unfocus();
                       if (passwordController.text.isNotEmpty &&
                           emailController.text.isNotEmpty) {
-                        await login();
+                        await _login();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

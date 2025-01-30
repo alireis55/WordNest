@@ -1,5 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:word_nest/UI/login_page.dart';
+import 'package:word_nest/UI/utils/api/models/register_model.dart';
+import 'package:word_nest/UI/utils/api/routa.dart';
+import 'package:word_nest/UI/utils/api/services/http.dart';
 import 'package:word_nest/UI/utils/validators/validators.dart';
 
 class RegistarPage extends StatefulWidget {
@@ -186,6 +191,54 @@ class _RegistarPageState extends State<RegistarPage> {
       }
     });
   }
+
+  Future<void> register() async {
+    setState(() {
+      responseLoading = true;
+    });
+    await HttpBase.post(
+            Routa.registerUrl,
+            RegisterModel(
+                    username: tfController1.text,
+                    email: tfController2.text,
+                    password: tfController3.text)
+                .toJson())
+        .then((response) {
+      if (response.statusCode == 201) {
+        LoginPage.pageController.animateToPage(0,
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeInOut);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: const Text('Registration successful. Please login.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: const Color.fromARGB(255, 36, 72, 101),
+          ));
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(jsonDecode(response.body)['message']),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
+            behavior: SnackBarBehavior.floating,
+            margin: const EdgeInsets.all(10),
+            backgroundColor: const Color.fromARGB(255, 36, 72, 101),
+          ));
+        }
+      }
+    });
+    setState(() {
+      responseLoading = false;
+    });
+  }
+
+  bool responseLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -494,6 +547,27 @@ class _RegistarPageState extends State<RegistarPage> {
                   child: TextButton(
                     onPressed: () {
                       FocusScope.of(context).unfocus();
+                      if (validIcon1 &&
+                          validIcon2 &&
+                          validIcon3 &&
+                          validIcon4 &&
+                          validIcon5 &&
+                          validIcon6 &&
+                          validIcon7 &&
+                          tfController1.text.isNotEmpty) {
+                        register();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor:
+                              const Color.fromARGB(255, 36, 72, 101),
+                          content: const Text("please enter all fields"),
+                          behavior: SnackBarBehavior.floating,
+                          margin: const EdgeInsets.all(10),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                        ));
+                      }
                     },
                     child: const Text(
                       "Sign Up",
@@ -522,6 +596,16 @@ class _RegistarPageState extends State<RegistarPage> {
                       curve: Curves.easeInOut);
                 },
                 icon: const Icon(Icons.arrow_back))),
+        responseLoading
+            ? Container(
+                color: Colors.black.withOpacity(0.5),
+                child: const Center(
+                  child: CircularProgressIndicator.adaptive(
+                    backgroundColor: Colors.white,
+                  ),
+                ),
+              )
+            : Container(),
       ],
     );
   }
