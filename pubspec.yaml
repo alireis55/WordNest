@@ -8,19 +8,20 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-    # for internet connection control
-  connectivity_plus: ^6.1.2
+  connectivity_plus: ^6.1.2  # for internet connection control
   http: ^1.3.0
-  shared_preferences: ^2.4.0
-  cupertino_icons: ^1.0.8
-  json_annotation: ^4.9.0 #for json to dart or exact opposite
+  shared_preferences: ^2.4.0 #for local storage
+  cupertino_icons: ^1.0.8    #for icons
+  json_annotation: ^4.9.0    #for json to dart or exact opposite
+  flutter_bloc: ^8.0.0       #for state management
+  flutter_card_swiper: ^7.0.2 #for card swipe
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
-  json_serializable: ^6.9.0 #for json to dart op exact opposite
-  build_runner: ^2.4.6 #for json to dart or exact opposite
+  flutter_lints: ^4.0.0      
+  json_serializable: ^6.9.0  #for json to dart op exact opposite
+  build_runner: ^2.4.6       #for json to dart or exact opposite
 
 flutter:
   uses-material-design: true

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:word_nest/UI/login_page.dart';
 import 'package:word_nest/UI/registar_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:word_nest/UI/word_page.dart';
 
 class PageControllerPage extends StatefulWidget {
   const PageControllerPage({super.key});
@@ -116,7 +117,11 @@ class _PageControllerPageState extends State<PageControllerPage> {
                     : PageView(
                         controller: LoginPage.pageController,
                         physics: const NeverScrollableScrollPhysics(),
-                        children: const [LoginPage(), RegistarPage()],
+                        children: const [
+                          WordPage(),
+                          LoginPage(),
+                          RegistarPage()
+                        ],
                       ),
           ),
         ],

@@ -1,0 +1,17 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:word_nest/UI/utils/api/models/random_word_model.dart';
+
+class WordCubit extends Cubit<List> {
+  WordCubit() : super([]);
+
+  void addWord(RandomWordModel randomWordModel) {
+    state.add(randomWordModel);
+    emit(state);
+  }
+
+  void clearWords() {
+    state.clear();
+    emit(state);
+  }
+}
