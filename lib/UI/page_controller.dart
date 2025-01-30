@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:word_nest/UI/login_page.dart';
 import 'package:word_nest/UI/registar_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:word_nest/UI/utils/token/token.dart';
 import 'package:word_nest/UI/word_page.dart';
 
 class PageControllerPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class _PageControllerPageState extends State<PageControllerPage> {
     super.initState();
     LoginPage.pageController = PageController(initialPage: 0);
     chechConnection();
+    checkToken();
   }
 
   Future<void> chechConnection() async {
@@ -44,12 +46,32 @@ class _PageControllerPageState extends State<PageControllerPage> {
     }
   }
 
+  Future<void> checkToken() async {
+    setState(() {
+      checkingConnection = true;
+    });
+    if (await SharedPrefsHelper.getToken() == "") {
+      setState(() {
+        token = false;
+      });
+    } else {
+      setState(() {
+        token = true;
+      });
+    }
+    setState(() {
+      checkingConnection = false;
+    });
+  }
+
   Future<void> deneme() async {
     setState(() {
       checkingConnection = true;
       isConnected = true;
     });
   }
+
+  bool token = false;
 
   void notConnection() {
     showDialog(
@@ -114,15 +136,13 @@ class _PageControllerPageState extends State<PageControllerPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [],
                       ))
-                    : PageView(
-                        controller: LoginPage.pageController,
-                        physics: const NeverScrollableScrollPhysics(),
-                        children: const [
-                          WordPage(),
-                          LoginPage(),
-                          RegistarPage()
-                        ],
-                      ),
+                    : token
+                        ? const WordPage()
+                        : PageView(
+                            controller: LoginPage.pageController,
+                            physics: const NeverScrollableScrollPhysics(),
+                            children: const [LoginPage(), RegistarPage()],
+                          ),
           ),
         ],
       ),

@@ -6,7 +6,9 @@ import 'package:word_nest/UI/utils/api/models/login_model.dart';
 
 import 'package:word_nest/UI/utils/api/routa.dart';
 import 'package:word_nest/UI/utils/api/services/http.dart';
+import 'package:word_nest/UI/utils/token/token.dart';
 import 'package:word_nest/UI/utils/validators/validators.dart';
+import 'package:word_nest/UI/word_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -73,6 +75,18 @@ class _LoginPageState extends State<LoginPage> {
         .then((response) {
       if (response.statusCode == 200) {
         print("login successfuly");
+        if (rememberMe) {
+          SharedPrefsHelper.createSharedPreferences();
+          SharedPrefsHelper.setToken(jsonDecode(response.body)["token"]);
+        }
+        if (mounted) {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const WordPage(),
+            ),
+          );
+        }
         setState(() {
           responseLoading = false;
         });
@@ -117,6 +131,8 @@ class _LoginPageState extends State<LoginPage> {
   late LoginModel loginModel;
 
   bool responseLoading = false;
+
+  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
@@ -174,7 +190,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(bottom: 20, left: 15, right: 15),
+                padding: const EdgeInsets.only(bottom: 0, left: 15, right: 15),
                 child: Container(
                   decoration: BoxDecoration(
                     gradient: !isFocused2
@@ -220,6 +236,24 @@ class _LoginPageState extends State<LoginPage> {
                       hintStyle: const TextStyle(color: Colors.grey),
                     ),
                   ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15),
+                child: Row(
+                  children: [
+                    Checkbox(
+                      checkColor: Colors.white,
+                      activeColor: Colors.green,
+                      value: rememberMe,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          rememberMe = value ?? false;
+                        });
+                      },
+                    ),
+                    const Text("Remember me")
+                  ],
                 ),
               ),
               SizedBox(

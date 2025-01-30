@@ -4,9 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:word_nest/Cubit/word_cubit.dart';
+import 'package:word_nest/UI/login_page.dart';
+import 'package:word_nest/UI/page_controller.dart';
 import 'package:word_nest/UI/utils/api/models/random_word_model.dart';
 import 'package:word_nest/UI/utils/api/routa.dart';
 import 'package:word_nest/UI/utils/api/services/http.dart';
+import 'package:word_nest/UI/utils/token/token.dart';
 
 class WordPage extends StatefulWidget {
   const WordPage({super.key});
@@ -44,7 +47,15 @@ class _WordPageState extends State<WordPage> {
         appBar: AppBar(
           title: const Text('Word Nest'),
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.logout))
+            IconButton(
+                onPressed: () async {
+                  await SharedPrefsHelper.deleteToken();
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const PageControllerPage()));
+                },
+                icon: const Icon(Icons.logout))
           ],
         ),
         body: loading
