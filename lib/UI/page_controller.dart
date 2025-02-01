@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/UI/WordPage/bottom_navigation_bar_page.dart';
 import 'package:word_nest/UI/login_page.dart';
 import 'package:word_nest/UI/registar_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:word_nest/UI/utils/token/token.dart';
-import 'package:word_nest/UI/word_page.dart';
 
 class PageControllerPage extends StatefulWidget {
   const PageControllerPage({super.key});
@@ -137,7 +137,7 @@ class _PageControllerPageState extends State<PageControllerPage> {
                         children: [],
                       ))
                     : token
-                        ? const WordPage()
+                        ? const BottomNavigatorPage()
                         : PageView(
                             controller: LoginPage.pageController,
                             physics: const NeverScrollableScrollPhysics(),

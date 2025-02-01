@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:word_nest/UI/WordPage/bottom_navigation_bar_page.dart';
 
 import 'package:word_nest/UI/utils/api/models/login_model.dart';
 
@@ -8,7 +9,6 @@ import 'package:word_nest/UI/utils/api/routa.dart';
 import 'package:word_nest/UI/utils/api/services/http.dart';
 import 'package:word_nest/UI/utils/token/token.dart';
 import 'package:word_nest/UI/utils/validators/validators.dart';
-import 'package:word_nest/UI/word_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -83,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => const WordPage(),
+              builder: (context) => const BottomNavigatorPage(),
             ),
           );
         }
