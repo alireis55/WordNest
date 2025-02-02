@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,10 +67,7 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator.adaptive(),
           )
         : RefreshIndicator(
-            onRefresh: () async {
-              context.read<WordCubit>().clearWords();
-              //await getWords();
-            },
+            onRefresh: () async {},
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: ConstrainedBox(
@@ -90,8 +88,8 @@ class _HomePageState extends State<HomePage> {
                         Flexible(
                           child: Container(
                             color: Colors.transparent,
-                            height: 250,
-                            width: 220,
+                            height: 300,
+                            width: 300,
                             child: SafeArea(
                               child:
                                   BlocBuilder<WordCubit, List<RandomWordModel>>(
@@ -131,9 +129,9 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           FloatingActionButton(
-                            elevation: 0,
+                            elevation: 7,
                             backgroundColor:
-                                const Color.fromARGB(255, 250, 243, 182),
+                                const Color.fromARGB(255, 248, 245, 216),
                             onPressed: () async {
                               await insertFavorite(context
                                   .read<WordCubit>()
@@ -151,7 +149,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           FloatingActionButton(
-                            elevation: 0,
+                            elevation: 7,
                             backgroundColor:
                                 const Color.fromARGB(255, 185, 219, 247),
                             onPressed: () {
@@ -181,17 +179,65 @@ class _HomePageState extends State<HomePage> {
 Widget containerCard(RandomWordModel? randomWordModel) {
   return Container(
     decoration: BoxDecoration(
-      color: Colors.grey,
+      gradient: const LinearGradient(
+        begin: Alignment.topLeft,
+        end: Alignment.bottomRight,
+        colors: [
+          Color.fromARGB(255, 250, 243, 182),
+          Color.fromARGB(255, 185, 219, 247),
+        ],
+      ),
       borderRadius: const BorderRadius.all(Radius.circular(20)),
-      border: Border.all(color: Colors.black),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.3),
+          spreadRadius: 2,
+          blurRadius: 10,
+          offset: const Offset(5, 5),
+        ),
+      ],
     ),
     child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
+        const Text(
+          'Word',
+          style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+        ),
         Text(randomWordModel!.word.word),
+        const Text(
+          'Pronunciation',
+          style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+        ),
         Text(randomWordModel.word.pronunciation),
-        Text(randomWordModel.word.meaning),
-        Text(randomWordModel.word.level),
-        Text(randomWordModel.word.example)
+        const Text(
+          'Meaning',
+          style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+        ),
+        Text(
+          randomWordModel.word.meaning,
+          textAlign: TextAlign.center,
+        ),
+        const Text(
+          'Level',
+          style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+        ),
+        Text(randomWordModel.word.level,
+            style: TextStyle(
+                fontWeight: FontWeight.w800,
+                color: randomWordModel.word.level == 'beginner'
+                    ? Colors.green
+                    : randomWordModel.word.level == 'intermediate'
+                        ? Colors.orange
+                        : const Color.fromARGB(255, 102, 13, 6))),
+        const Text(
+          'Example',
+          style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+        ),
+        Text(
+          randomWordModel.word.example,
+          textAlign: TextAlign.center,
+        )
       ],
     ),
   );

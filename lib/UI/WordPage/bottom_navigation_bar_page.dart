@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:word_nest/UI/WordPage/favorite_page.dart';
 import 'package:word_nest/UI/WordPage/word_page.dart';
@@ -28,46 +30,67 @@ class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      backgroundColor: Colors.transparent,
       appBar: AppBar(
+        backgroundColor: Colors.white.withOpacity(0.5),
+        elevation: 0,
         title: const Text('Word Nest'),
         actions: [
-          IconButton(
-              onPressed: () async {
-                await SharedPrefsHelper.deleteToken();
-                // this is a workaround to avoid the error of calling a method
-                WidgetsBinding.instance.addPostFrameCallback(
-                  (_) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const PageControllerPage()));
+          currentIndex == 0
+              ? IconButton(
+                  onPressed: () async {
+                    await SharedPrefsHelper.deleteToken();
+                    // this is a workaround to avoid the error of calling a method
+                    WidgetsBinding.instance.addPostFrameCallback(
+                      (_) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const PageControllerPage()));
+                      },
+                    );
                   },
-                );
-              },
-              icon: const Icon(Icons.logout)),
-          IconButton(
-            onPressed: () async {
-              await clearFavorites();
-            },
-            icon: const Icon(Icons.delete),
-          )
+                  icon: const Icon(Icons.logout))
+              : IconButton(
+                  onPressed: () async {
+                    await clearFavorites();
+                  },
+                  icon: const Icon(Icons.delete),
+                )
         ],
       ),
-      body: pages[currentIndex],
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('lib/assets/background2.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: SafeArea(child: pages[currentIndex]),
+      ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           splashFactory: NoSplash.splashFactory,
           highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
+          elevation: 0,
+          backgroundColor: Colors.white.withOpacity(0.5),
           items: [
             BottomNavigationBarItem(
-              icon: Icon(currentIndex == 0 ? Icons.home : Icons.home_outlined,
+              icon: Icon(
+                  size: 30,
+                  currentIndex == 0 ? Icons.home : Icons.home_outlined,
                   color: const Color.fromARGB(255, 22, 102, 168)),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(currentIndex == 1 ? Icons.star : Icons.star_border,
+              icon: Icon(
+                  size: 30,
+                  currentIndex == 1 ? Icons.star : Icons.star_border,
                   color: const Color.fromARGB(255, 182, 167, 38)),
               label: 'Favorites',
             ),

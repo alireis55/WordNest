@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:word_nest/UI/utils/DB/Database.dart';
 
@@ -16,7 +18,7 @@ class _FavoritePageState extends State<FavoritePage> {
     setState(() {
       favorites = favoritess;
     });
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(Duration.zero);
     setState(() {
       FavoritePage.loading.value = false;
     });
@@ -44,12 +46,33 @@ class _FavoritePageState extends State<FavoritePage> {
         ? const Center(
             child: CircularProgressIndicator(),
           )
-        : ListView.separated(
-            separatorBuilder: (context, index) => const Divider(),
+        : ListView.builder(
             itemCount: favorites.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text('Word ${favorites[index]['word']}'),
+              return ClipRRect(
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: Card(
+                    elevation: 0,
+                    color: Colors.white.withOpacity(0.3),
+                    child: ListTile(
+                      title: Text(
+                          style: const TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w700),
+                          textAlign: TextAlign.center,
+                          '${favorites[index]['word']}'),
+                      subtitle: Text(
+                          style: TextStyle(
+                              color: favorites[index]['level'] == 'beginner'
+                                  ? Colors.green
+                                  : favorites[index]['level'] == 'intermediate'
+                                      ? Colors.orange
+                                      : Colors.red),
+                          textAlign: TextAlign.center,
+                          '${favorites[index]['level']}'),
+                    ),
+                  ),
+                ),
               );
             },
           );
