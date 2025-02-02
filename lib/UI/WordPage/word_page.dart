@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:word_nest/Cubit/word_cubit.dart';
+import 'package:word_nest/UI/utils/DB/Database.dart';
 import 'package:word_nest/UI/utils/api/models/random_word_model.dart';
 import 'package:word_nest/UI/utils/api/routa.dart';
 import 'package:word_nest/UI/utils/api/services/http.dart';
@@ -21,7 +22,12 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     if (context.read<WordCubit>().state.isEmpty) {
       getWords();
+    } else {
+      setState(() {
+        loading = false;
+      });
     }
+    createDatabase();
   }
 
   Future<void> getWords() async {
@@ -50,6 +56,8 @@ class _HomePageState extends State<HomePage> {
   bool loading = true;
 
   CardSwiperController cardSwiperController = CardSwiperController();
+
+  int currentWordIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -94,6 +102,9 @@ class _HomePageState extends State<HomePage> {
                                         if (currentIndex == state.length - 2) {
                                           getWords();
                                         }
+                                        setState(() {
+                                          currentWordIndex = currentIndex!;
+                                        });
                                         return true;
                                       },
                                       controller: cardSwiperController,
@@ -114,6 +125,51 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 50),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          FloatingActionButton(
+                            elevation: 0,
+                            backgroundColor:
+                                const Color.fromARGB(255, 250, 243, 182),
+                            onPressed: () async {
+                              await insertFavorite(context
+                                  .read<WordCubit>()
+                                  .state[currentWordIndex]);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Word added to favorites'),
+                                ),
+                              );
+                            },
+                            child: const Icon(
+                              size: 35,
+                              Icons.star,
+                              color: Color.fromARGB(255, 244, 221, 11),
+                            ),
+                          ),
+                          FloatingActionButton(
+                            elevation: 0,
+                            backgroundColor:
+                                const Color.fromARGB(255, 185, 219, 247),
+                            onPressed: () {
+                              cardSwiperController
+                                  .swipe(CardSwiperDirection.right);
+                              setState(() {
+                                currentWordIndex++;
+                              });
+                            },
+                            child: const Icon(
+                              size: 35,
+                              Icons.arrow_forward,
+                              color: Color.fromARGB(255, 9, 136, 241),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
                 ),
               ),

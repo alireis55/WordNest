@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:word_nest/UI/WordPage/favorite_page.dart';
 import 'package:word_nest/UI/WordPage/word_page.dart';
 import 'package:word_nest/UI/page_controller.dart';
+import 'package:word_nest/UI/utils/DB/Database.dart';
 import 'package:word_nest/UI/utils/token/token.dart';
 
 class BottomNavigatorPage extends StatefulWidget {
@@ -12,6 +13,11 @@ class BottomNavigatorPage extends StatefulWidget {
 }
 
 class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
+  Future<void> clearFavorites() async {
+    await clearFavoriteTable();
+    FavoritePage.loading.value = true;
+  }
+
   List<Widget> pages = [
     const HomePage(),
     const FavoritePage(),
@@ -38,7 +44,13 @@ class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
                   },
                 );
               },
-              icon: const Icon(Icons.logout))
+              icon: const Icon(Icons.logout)),
+          IconButton(
+            onPressed: () async {
+              await clearFavorites();
+            },
+            icon: const Icon(Icons.delete),
+          )
         ],
       ),
       body: pages[currentIndex],
@@ -48,13 +60,15 @@ class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
           highlightColor: Colors.transparent,
         ),
         child: BottomNavigationBar(
-          items: const [
+          items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(currentIndex == 0 ? Icons.home : Icons.home_outlined,
+                  color: const Color.fromARGB(255, 22, 102, 168)),
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.star),
+              icon: Icon(currentIndex == 1 ? Icons.star : Icons.star_border,
+                  color: const Color.fromARGB(255, 182, 167, 38)),
               label: 'Favorites',
             ),
           ],
