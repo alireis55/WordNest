@@ -78,7 +78,6 @@ class _HomePageState extends State<HomePage> {
                       56 -
                       MediaQuery.of(context).padding.bottom -
                       100,
-                  //GlobalKey().currentContext!.size!.height ??,
                 ),
                 child: Column(
                   children: [
@@ -129,28 +128,32 @@ class _HomePageState extends State<HomePage> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           FloatingActionButton(
+                            heroTag: "favorite",
                             focusElevation: 0,
                             highlightElevation: 0,
                             elevation: 7,
                             backgroundColor:
                                 const Color.fromARGB(255, 248, 245, 216),
                             onPressed: () async {
-                              await insertFavorite(context
+                              final currentWord = context
                                   .read<WordCubit>()
-                                  .state[currentWordIndex]);
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  duration: const Duration(seconds: 1),
-                                  backgroundColor:
-                                      const Color.fromARGB(255, 36, 72, 101),
-                                  behavior: SnackBarBehavior.floating,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
+                                  .state[currentWordIndex];
+                              await insertFavorite(currentWord);
+                              WidgetsBinding.instance.addPostFrameCallback((_) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    duration: const Duration(seconds: 1),
+                                    backgroundColor:
+                                        const Color.fromARGB(255, 36, 72, 101),
+                                    behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    content: Text(
+                                        '${currentWord.word.word} added to favorites'),
                                   ),
-                                  content: Text(
-                                      '${context.read<WordCubit>().state[currentWordIndex].word.word} added to favorites'),
-                                ),
-                              );
+                                );
+                              });
                             },
                             child: const Icon(
                               size: 35,
@@ -159,6 +162,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           FloatingActionButton(
+                            heroTag: "next",
                             highlightElevation: 0,
                             focusElevation: 0,
                             focusColor: Colors.transparent,

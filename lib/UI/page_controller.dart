@@ -29,7 +29,6 @@ class _PageControllerPageState extends State<PageControllerPage> {
     await deneme();
     List<ConnectivityResult> result =
         await (Connectivity().checkConnectivity());
-    print(result.contains(ConnectivityResult.none));
     if (result.contains(ConnectivityResult.none)) {
       setState(() {
         checkingConnection = false;

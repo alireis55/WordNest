@@ -19,9 +19,11 @@ class _FavoritePageState extends State<FavoritePage> {
       favorites = favoritess;
     });
     await Future.delayed(Duration.zero);
-    setState(() {
-      FavoritePage.loading.value = false;
-    });
+    if (mounted) {
+      setState(() {
+        FavoritePage.loading.value = false;
+      });
+    }
   }
 
   @override
@@ -29,7 +31,7 @@ class _FavoritePageState extends State<FavoritePage> {
     super.initState();
     showFavorites();
     FavoritePage.loading.addListener(() async {
-      if (FavoritePage.loading.value) {
+      if (FavoritePage.loading.value && mounted) {
         setState(() {
           FavoritePage.loading.value = true;
         });

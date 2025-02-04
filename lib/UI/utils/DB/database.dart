@@ -44,6 +44,5 @@ Future<List> getFavorites() async {
     join(await getDatabasesPath(), 'favorites_database.db'),
   );
   final List<Map<String, dynamic>> maps = await db.query('favorites');
-  print(maps.length);
   return maps;
 }

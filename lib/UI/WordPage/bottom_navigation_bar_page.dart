@@ -53,8 +53,8 @@ class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
                   },
                   icon: const Icon(Icons.logout))
               : IconButton(
-                  onPressed: () async {
-                    await clearFavorites();
+                  onPressed: () {
+                    clearFavorites();
                   },
                   icon: const Icon(Icons.delete),
                 )

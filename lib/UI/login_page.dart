@@ -74,7 +74,6 @@ class _LoginPageState extends State<LoginPage> {
                 .toJson())
         .then((response) {
       if (response.statusCode == 200) {
-        print("login successfuly");
         if (rememberMe) {
           SharedPrefsHelper.createSharedPreferences();
           SharedPrefsHelper.setToken(jsonDecode(response.body)["token"]);
