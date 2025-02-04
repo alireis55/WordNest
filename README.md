@@ -10,7 +10,7 @@
   <img src="https://github.com/user-attachments/assets/e1da55d9-17b6-4cb4-94f1-88f151ed21e8" style="width: 24%;" />
   <img src="https://github.com/user-attachments/assets/5833d1d2-9e39-4121-a81e-f7e1aa80f5c6" style="width: 24%;" />
 </p>
-• On the home page, you can scroll the cards to see new.
+• On the home page, you can scroll the cards to see new word.
 <p style="display: flex; justify-content: space-between;">
   <img src="https://github.com/user-attachments/assets/a42b62de-4d55-4a45-aa94-05e06e3b3cee" style="width: 24%;" />
 </p> 
