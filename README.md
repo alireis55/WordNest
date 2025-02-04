@@ -1,4 +1,4 @@
-• create a accont.
+• create a account.
 <p style="display: flex; justify-content: space-between;">
   <img src="https://github.com/user-attachments/assets/c1e8585d-ed83-476d-9f67-e7956c5f94e2" style="width: 24%;" />
   <img src="https://github.com/user-attachments/assets/47165cf8-2cfb-4ca4-ab0a-b81ac2d93aee" style="width: 24%;" />
