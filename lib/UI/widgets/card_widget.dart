@@ -1,0 +1,73 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:word_nest/core/connections/models/random_word_model.dart';
+
+Widget containerCard(RandomWordModel? randomWordModel) {
+  return ClipRRect(
+    borderRadius: const BorderRadius.all(Radius.circular(20)),
+    child: BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(20)),
+          border: Border.all(
+            color: const Color.fromARGB(255, 255, 247, 247).withOpacity(0.3),
+            width: 3,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(0, 255, 247, 247).withOpacity(0.1),
+              spreadRadius: 0,
+              blurRadius: 0,
+              offset: const Offset(0, 0),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const Text(
+              'Word',
+              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+            ),
+            Text(randomWordModel!.word.word),
+            const Text(
+              'Pronunciation',
+              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+            ),
+            Text(randomWordModel.word.pronunciation),
+            const Text(
+              'Meaning',
+              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+            ),
+            Text(
+              randomWordModel.word.meaning,
+              textAlign: TextAlign.center,
+            ),
+            const Text(
+              'Level',
+              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+            ),
+            Text(randomWordModel.word.level,
+                style: TextStyle(
+                    fontWeight: FontWeight.w800,
+                    color: randomWordModel.word.level == 'beginner'
+                        ? Colors.green
+                        : randomWordModel.word.level == 'intermediate'
+                            ? Colors.orange
+                            : const Color.fromARGB(255, 102, 13, 6))),
+            const Text(
+              'Example',
+              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
+            ),
+            Text(
+              randomWordModel.word.example,
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
+      ),
+    ),
+  );
+}

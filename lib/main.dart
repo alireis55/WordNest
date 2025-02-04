@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:word_nest/Cubit/word_cubit.dart';
-import 'package:word_nest/UI/page_controller.dart';
+import 'package:word_nest/core/Cubit/word_cubit.dart';
+import 'package:word_nest/UI/screens/auth/page_controller.dart';
 
 void main() {
   runApp(const MyApp());

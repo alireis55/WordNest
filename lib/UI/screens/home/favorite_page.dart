@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/utils/DB/Database.dart';
+import 'package:word_nest/core/database/database.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});

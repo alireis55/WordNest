@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/WordPage/favorite_page.dart';
-import 'package:word_nest/UI/WordPage/word_page.dart';
-import 'package:word_nest/UI/page_controller.dart';
-import 'package:word_nest/UI/utils/DB/Database.dart';
-import 'package:word_nest/UI/utils/token/token.dart';
+import 'package:word_nest/UI/screens/home/favorite_page.dart';
+import 'package:word_nest/UI/screens/home/word_page.dart';
+import 'package:word_nest/UI/screens/auth/page_controller.dart';
+import 'package:word_nest/core/database/database.dart';
+import 'package:word_nest/core/token/token.dart';
 
 class BottomNavigatorPage extends StatefulWidget {
   const BottomNavigatorPage({super.key});
@@ -43,7 +43,7 @@ class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
                     // this is a workaround to avoid the error of calling a method
                     WidgetsBinding.instance.addPostFrameCallback(
                       (_) {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
@@ -63,7 +63,7 @@ class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('lib/assets/background2.png'),
+            image: AssetImage('lib/core/assets/background2.png'),
             fit: BoxFit.cover,
           ),
         ),

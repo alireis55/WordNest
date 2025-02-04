@@ -1,14 +1,14 @@
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:word_nest/Cubit/word_cubit.dart';
-import 'package:word_nest/UI/utils/DB/Database.dart';
-import 'package:word_nest/UI/utils/api/models/random_word_model.dart';
-import 'package:word_nest/UI/utils/api/routa.dart';
-import 'package:word_nest/UI/utils/api/services/http.dart';
+import 'package:word_nest/UI/widgets/card_widget.dart';
+import 'package:word_nest/core/Cubit/word_cubit.dart';
+import 'package:word_nest/core/database/database.dart';
+import 'package:word_nest/core/connections/models/random_word_model.dart';
+import 'package:word_nest/core/connections/api/routes/routa.dart';
+import 'package:word_nest/core/connections/api/services/http.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -191,73 +191,4 @@ class _HomePageState extends State<HomePage> {
             ),
           );
   }
-}
-
-Widget containerCard(RandomWordModel? randomWordModel) {
-  return ClipRRect(
-    borderRadius: const BorderRadius.all(Radius.circular(20)),
-    child: BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 50, sigmaY: 50),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(20)),
-          border: Border.all(
-            color: const Color.fromARGB(255, 255, 247, 247).withOpacity(0.3),
-            width: 3,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(0, 255, 247, 247).withOpacity(0.1),
-              spreadRadius: 0,
-              blurRadius: 0,
-              offset: const Offset(0, 0),
-            ),
-          ],
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const Text(
-              'Word',
-              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
-            ),
-            Text(randomWordModel!.word.word),
-            const Text(
-              'Pronunciation',
-              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
-            ),
-            Text(randomWordModel.word.pronunciation),
-            const Text(
-              'Meaning',
-              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
-            ),
-            Text(
-              randomWordModel.word.meaning,
-              textAlign: TextAlign.center,
-            ),
-            const Text(
-              'Level',
-              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
-            ),
-            Text(randomWordModel.word.level,
-                style: TextStyle(
-                    fontWeight: FontWeight.w800,
-                    color: randomWordModel.word.level == 'beginner'
-                        ? Colors.green
-                        : randomWordModel.word.level == 'intermediate'
-                            ? Colors.orange
-                            : const Color.fromARGB(255, 102, 13, 6))),
-            const Text(
-              'Example',
-              style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
-            ),
-            Text(
-              randomWordModel.word.example,
-              textAlign: TextAlign.center,
-            )
-          ],
-        ),
-      ),
-    ),
-  );
 }

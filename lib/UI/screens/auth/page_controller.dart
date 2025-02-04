@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/WordPage/bottom_navigation_bar_page.dart';
-import 'package:word_nest/UI/login_page.dart';
-import 'package:word_nest/UI/registar_page.dart';
+import 'package:word_nest/UI/screens/home/bottom_navigation_bar_page.dart';
+import 'package:word_nest/UI/screens/auth/login_page.dart';
+import 'package:word_nest/UI/screens/auth/registar_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:word_nest/UI/utils/token/token.dart';
+import 'package:word_nest/core/token/token.dart';
 
 class PageControllerPage extends StatefulWidget {
   const PageControllerPage({super.key});
@@ -122,7 +122,7 @@ class _PageControllerPageState extends State<PageControllerPage> {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                  image: AssetImage('lib/assets/background.png'),
+                  image: AssetImage('lib/core/assets/background.png'),
                   fit: BoxFit.cover),
             ),
             child: checkingConnection

@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/WordPage/bottom_navigation_bar_page.dart';
+import 'package:word_nest/UI/screens/home/bottom_navigation_bar_page.dart';
 
-import 'package:word_nest/UI/utils/api/models/login_model.dart';
+import 'package:word_nest/core/connections/models/login_model.dart';
 
-import 'package:word_nest/UI/utils/api/routa.dart';
-import 'package:word_nest/UI/utils/api/services/http.dart';
-import 'package:word_nest/UI/utils/token/token.dart';
-import 'package:word_nest/UI/utils/validators/validators.dart';
+import 'package:word_nest/core/connections/api/routes/routa.dart';
+import 'package:word_nest/core/connections/api/services/http.dart';
+import 'package:word_nest/core/token/token.dart';
+import 'package:word_nest/core/utils/validators/validators.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                   width: 508 * 0.3,
                   height: 417 * 0.3,
-                  child: Image(image: AssetImage('lib/assets/logo.png'))),
+                  child: Image(image: AssetImage('lib/core/assets/logo.png'))),
               Padding(
                 padding: const EdgeInsets.only(
                     top: 20, bottom: 20, left: 15, right: 15),
