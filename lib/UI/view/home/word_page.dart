@@ -6,9 +6,9 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:word_nest/UI/widgets/card_widget.dart';
 import 'package:word_nest/core/Cubit/word_cubit.dart';
 import 'package:word_nest/core/database/database.dart';
-import 'package:word_nest/core/connections/models/random_word_model.dart';
-import 'package:word_nest/core/connections/api/routes/routa.dart';
-import 'package:word_nest/core/connections/api/services/http.dart';
+import 'package:word_nest/core/models/random_word_model.dart';
+import 'package:word_nest/core/services/routes/route.dart';
+import 'package:word_nest/core/services/http_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getWords() async {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 13; i++) {
       await HttpBase.get(Routa.randomeUrl).then((response) {
         final randomWord = RandomWordModel.fromJson(jsonDecode(response.body));
         if (mounted) {
@@ -96,7 +96,7 @@ class _HomePageState extends State<HomePage> {
                                   return CardSwiper(
                                       onSwipe: (previousIndex, currentIndex,
                                           direction) {
-                                        if (currentIndex == state.length - 2) {
+                                        if (currentIndex == state.length - 10) {
                                           getWords();
                                         }
                                         setState(() {

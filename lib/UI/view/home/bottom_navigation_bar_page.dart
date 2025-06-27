@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/screens/home/favorite_page.dart';
-import 'package:word_nest/UI/screens/home/word_page.dart';
-import 'package:word_nest/UI/screens/auth/page_controller.dart';
+import 'package:word_nest/UI/view/home/favorite_page.dart';
+import 'package:word_nest/UI/view/home/word_page.dart';
+import 'package:word_nest/UI/view/auth/page_controller.dart';
 import 'package:word_nest/core/database/database.dart';
 import 'package:word_nest/core/token/token.dart';
 
@@ -32,7 +32,7 @@ class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
       extendBody: true,
       backgroundColor: Colors.transparent,
       appBar: AppBar(
-        backgroundColor: Colors.white.withOpacity(0.5),
+        backgroundColor: Colors.white..withAlpha(125),
         elevation: 0,
         title: const Text('Word Nest'),
         actions: [
@@ -76,7 +76,7 @@ class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
         ),
         child: BottomNavigationBar(
           elevation: 0,
-          backgroundColor: Colors.white.withOpacity(0.5),
+          backgroundColor: Colors.white..withAlpha(125),
           items: [
             BottomNavigationBarItem(
               icon: Icon(

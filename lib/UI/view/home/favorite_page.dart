@@ -56,7 +56,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                   child: Card(
                     elevation: 0,
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white..withAlpha(75),
                     child: ListTile(
                       title: Text(
                           style: const TextStyle(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/screens/home/bottom_navigation_bar_page.dart';
-import 'package:word_nest/UI/screens/auth/login_page.dart';
-import 'package:word_nest/UI/screens/auth/registar_page.dart';
+import 'package:word_nest/UI/view/home/bottom_navigation_bar_page.dart';
+import 'package:word_nest/UI/view/auth/login_page.dart';
+import 'package:word_nest/UI/view/auth/registar_page.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:word_nest/core/token/token.dart';
 

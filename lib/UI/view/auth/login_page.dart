@@ -1,14 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/screens/home/bottom_navigation_bar_page.dart';
+import 'package:word_nest/UI/view/home/bottom_navigation_bar_page.dart';
 
-import 'package:word_nest/core/connections/models/login_model.dart';
+import 'package:word_nest/core/models/request/request_login_model.dart';
 
-import 'package:word_nest/core/connections/api/routes/routa.dart';
-import 'package:word_nest/core/connections/api/services/http.dart';
+import 'package:word_nest/core/services/routes/route.dart';
+import 'package:word_nest/core/services/http_service.dart';
 import 'package:word_nest/core/token/token.dart';
-import 'package:word_nest/core/utils/validators/validators.dart';
+import 'package:word_nest/UI/utils/validators/validators.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -325,7 +325,7 @@ class _LoginPageState extends State<LoginPage> {
         ),
         responseLoading
             ? Container(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black.withAlpha(125),
                 child: const Center(
                     child: CircularProgressIndicator.adaptive(
                   backgroundColor: Colors.white,

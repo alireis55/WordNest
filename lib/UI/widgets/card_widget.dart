@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:word_nest/core/connections/models/random_word_model.dart';
+import 'package:word_nest/core/models/random_word_model.dart';
 
 Widget containerCard(RandomWordModel? randomWordModel) {
   return ClipRRect(
@@ -12,12 +12,12 @@ Widget containerCard(RandomWordModel? randomWordModel) {
         decoration: BoxDecoration(
           borderRadius: const BorderRadius.all(Radius.circular(20)),
           border: Border.all(
-            color: const Color.fromARGB(255, 255, 247, 247).withOpacity(0.3),
+            color: const Color.fromARGB(255, 255, 247, 247).withAlpha(75),
             width: 3,
           ),
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(0, 255, 247, 247).withOpacity(0.1),
+              color: const Color.fromARGB(0, 255, 247, 247).withAlpha(25),
               spreadRadius: 0,
               blurRadius: 0,
               offset: const Offset(0, 0),

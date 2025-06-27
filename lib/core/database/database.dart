@@ -1,6 +1,6 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:word_nest/core/connections/models/random_word_model.dart';
+import 'package:word_nest/core/models/random_word_model.dart';
 
 Future<void> insertFavorite(RandomWordModel randomWord) async {
   await (await openDatabase(

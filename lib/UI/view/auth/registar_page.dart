@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/screens/auth/login_page.dart';
-import 'package:word_nest/core/connections/models/register_model.dart';
-import 'package:word_nest/core/connections/api/routes/routa.dart';
-import 'package:word_nest/core/connections/api/services/http.dart';
-import 'package:word_nest/core/utils/validators/validators.dart';
+import 'package:word_nest/UI/view/auth/login_page.dart';
+import 'package:word_nest/core/models/request/request_register_model.dart';
+import 'package:word_nest/core/services/routes/route.dart';
+import 'package:word_nest/core/services/http_service.dart';
+import 'package:word_nest/UI/utils/validators/validators.dart';
 
 class RegistarPage extends StatefulWidget {
   const RegistarPage({super.key});
@@ -598,7 +598,7 @@ class _RegistarPageState extends State<RegistarPage> {
                 icon: const Icon(Icons.arrow_back))),
         responseLoading
             ? Container(
-                color: Colors.black.withOpacity(0.5),
+                color: Colors.black..withAlpha(125),
                 child: const Center(
                   child: CircularProgressIndicator.adaptive(
                     backgroundColor: Colors.white,

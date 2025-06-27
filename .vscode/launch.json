@@ -20,7 +20,7 @@
                "request": "launch",
                "type": "dart",
                "flutterMode": "release",
-               "program": "lib/UI/main.dart"
+               "program": "lib/main.dart"
           }
      ]
 }
