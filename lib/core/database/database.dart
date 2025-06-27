@@ -1,8 +1,8 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:word_nest/core/models/random_word_model.dart';
+import 'package:word_nest/core/models/response/response_random_word_model.dart';
 
-Future<void> insertFavorite(RandomWordModel randomWord) async {
+Future<void> insertFavorite(ResponseRandomWordModel randomWord) async {
   await (await openDatabase(
     join(await getDatabasesPath(), 'favorites_database.db'),
   ))
@@ -10,11 +10,11 @@ Future<void> insertFavorite(RandomWordModel randomWord) async {
     await txn.rawInsert(
       'INSERT INTO favorites(word, meaning, pronunciation, example, level) VALUES(?, ?, ?, ?, ?)',
       [
-        randomWord.word.word,
-        randomWord.word.meaning,
-        randomWord.word.pronunciation,
-        randomWord.word.example,
-        randomWord.word.level,
+        randomWord.word?.word,
+        randomWord.word?.meaning,
+        randomWord.word?.pronunciation,
+        randomWord.word?.example,
+        randomWord.word?.level,
       ],
     );
   });

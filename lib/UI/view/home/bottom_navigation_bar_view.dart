@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_nest/UI/view/home/favorite_page.dart';
-import 'package:word_nest/UI/view/home/word_page.dart';
+import 'package:word_nest/UI/view/home/word_view.dart';
 import 'package:word_nest/UI/view/auth/page_controller.dart';
 import 'package:word_nest/core/database/database.dart';
 import 'package:word_nest/core/token/token.dart';

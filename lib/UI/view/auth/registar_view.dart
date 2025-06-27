@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/view/auth/login_page.dart';
+import 'package:word_nest/UI/view/auth/login_view.dart';
+import 'package:word_nest/core/services/register_service.dart';
 import 'package:word_nest/core/models/request/request_register_model.dart';
-import 'package:word_nest/core/services/routes/route.dart';
-import 'package:word_nest/core/services/http_service.dart';
+import 'package:word_nest/UI/widgets/custom_snackbar.dart';
 import 'package:word_nest/UI/utils/validators/validators.dart';
 
 class RegistarPage extends StatefulWidget {
@@ -25,9 +23,9 @@ class _RegistarPageState extends State<RegistarPage> {
   bool isFocused3 = false;
   bool isFocused4 = false;
 
-  TextEditingController tfController1 = TextEditingController();
-  TextEditingController tfController2 = TextEditingController();
-  TextEditingController tfController3 = TextEditingController();
+  TextEditingController userNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
   TextEditingController tfController4 = TextEditingController();
 
   bool validIcon1 = false;
@@ -89,8 +87,8 @@ class _RegistarPageState extends State<RegistarPage> {
         });
       }
     });
-    tfController2.addListener(() {
-      if (emailValidator(tfController2.text) == null) {
+    emailController.addListener(() {
+      if (emailValidator(emailController.text) == null) {
         setState(() {
           validIcon1 = true;
         });
@@ -100,8 +98,9 @@ class _RegistarPageState extends State<RegistarPage> {
         });
       }
     });
-    tfController3.addListener(() {
-      if (PasswordValidator.validate6Charecter(tfController3.text) == null) {
+    passwordController.addListener(() {
+      if (PasswordValidator.validate6Charecter(passwordController.text) ==
+          null) {
         setState(() {
           validIcon2 = true;
         });
@@ -110,7 +109,7 @@ class _RegistarPageState extends State<RegistarPage> {
           validIcon2 = false;
         });
       }
-      if (PasswordValidator.validateSpecialCharecter(tfController3.text) ==
+      if (PasswordValidator.validateSpecialCharecter(passwordController.text) ==
           null) {
         setState(() {
           validIcon3 = true;
@@ -120,7 +119,8 @@ class _RegistarPageState extends State<RegistarPage> {
           validIcon3 = false;
         });
       }
-      if (PasswordValidator.validateUpperCase(tfController3.text) == null) {
+      if (PasswordValidator.validateUpperCase(passwordController.text) ==
+          null) {
         setState(() {
           validIcon4 = true;
         });
@@ -129,7 +129,8 @@ class _RegistarPageState extends State<RegistarPage> {
           validIcon4 = false;
         });
       }
-      if (PasswordValidator.validateLowerCase(tfController3.text) == null) {
+      if (PasswordValidator.validateLowerCase(passwordController.text) ==
+          null) {
         setState(() {
           validIcon5 = true;
         });
@@ -138,7 +139,7 @@ class _RegistarPageState extends State<RegistarPage> {
           validIcon5 = false;
         });
       }
-      if (PasswordValidator.validateNumber(tfController3.text) == null) {
+      if (PasswordValidator.validateNumber(passwordController.text) == null) {
         setState(() {
           validIcon6 = true;
         });
@@ -148,10 +149,10 @@ class _RegistarPageState extends State<RegistarPage> {
         });
       }
     });
-    tfController3.addListener(() {
-      if (tfController3.text.isNotEmpty) {
+    passwordController.addListener(() {
+      if (passwordController.text.isNotEmpty) {
         tfController4.addListener(() {
-          if (tfController3.text == tfController4.text &&
+          if (passwordController.text == tfController4.text &&
               tfController4.text.isNotEmpty) {
             setState(() {
               validIcon7 = true;
@@ -168,8 +169,8 @@ class _RegistarPageState extends State<RegistarPage> {
         });
       }
     });
-    tfController3.addListener(() {
-      if (tfController3.text.isNotEmpty) {
+    passwordController.addListener(() {
+      if (passwordController.text.isNotEmpty) {
         setState(() {
           visibilityOfVisibileIcon1 = true;
         });
@@ -194,51 +195,32 @@ class _RegistarPageState extends State<RegistarPage> {
 
   Future<void> register() async {
     setState(() {
-      responseLoading = true;
+      loading = true;
     });
-    await HttpBase.post(
-            Routa.registerUrl,
-            RegisterModel(
-                    username: tfController1.text,
-                    email: tfController2.text,
-                    password: tfController3.text)
-                .toJson())
-        .then((response) {
-      if (response.statusCode == 201) {
+    try {
+      final response = await RegisterService.register(RequestRegisterModel(
+        username: userNameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+      ));
+      if (mounted) {
+        CustomSnackBar.show(context, response.message!);
         LoginPage.pageController.animateToPage(0,
             duration: const Duration(milliseconds: 200),
             curve: Curves.easeInOut);
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: const Text('Registration successful. Please login.'),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.all(10),
-            backgroundColor: const Color.fromARGB(255, 36, 72, 101),
-          ));
-        }
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            content: Text(jsonDecode(response.body)['message']),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
-            ),
-            behavior: SnackBarBehavior.floating,
-            margin: const EdgeInsets.all(10),
-            backgroundColor: const Color.fromARGB(255, 36, 72, 101),
-          ));
-        }
       }
-    });
+    } catch (e) {
+      if (mounted) {
+        CustomSnackBar.show(
+            context, e.toString().replaceAll('Exception: ', ''));
+      }
+    }
     setState(() {
-      responseLoading = false;
+      loading = false;
     });
   }
 
-  bool responseLoading = false;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -266,7 +248,7 @@ class _RegistarPageState extends State<RegistarPage> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: TextFormField(
-                    controller: tfController1,
+                    controller: userNameController,
                     focusNode: tfFocusNode1,
                     decoration: InputDecoration(
                       filled: true,
@@ -305,7 +287,7 @@ class _RegistarPageState extends State<RegistarPage> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: TextFormField(
-                    controller: tfController2,
+                    controller: emailController,
                     focusNode: tfFocusNode2,
                     decoration: InputDecoration(
                       filled: true,
@@ -361,7 +343,7 @@ class _RegistarPageState extends State<RegistarPage> {
                   ),
                   child: TextFormField(
                     obscureText: obscureText,
-                    controller: tfController3,
+                    controller: passwordController,
                     focusNode: tfFocusNode3,
                     decoration: InputDecoration(
                       suffixIcon: Visibility(
@@ -554,7 +536,7 @@ class _RegistarPageState extends State<RegistarPage> {
                           validIcon5 &&
                           validIcon6 &&
                           validIcon7 &&
-                          tfController1.text.isNotEmpty) {
+                          userNameController.text.isNotEmpty) {
                         register();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -596,7 +578,7 @@ class _RegistarPageState extends State<RegistarPage> {
                       curve: Curves.easeInOut);
                 },
                 icon: const Icon(Icons.arrow_back))),
-        responseLoading
+        loading
             ? Container(
                 color: Colors.black..withAlpha(125),
                 child: const Center(

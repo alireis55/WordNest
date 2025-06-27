@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/view/home/bottom_navigation_bar_page.dart';
+import 'package:word_nest/UI/view/home/bottom_navigation_bar_view.dart';
 
 import 'package:word_nest/core/models/request/request_login_model.dart';
 
