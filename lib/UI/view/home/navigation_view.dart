@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/view/home/favorite_page.dart';
+import 'package:word_nest/UI/view/home/favorite_View.dart';
 import 'package:word_nest/UI/view/home/word_view.dart';
-import 'package:word_nest/UI/view/auth/page_controller.dart';
+import 'package:word_nest/UI/view/root/root_view.dart';
 import 'package:word_nest/core/database/database.dart';
 import 'package:word_nest/core/token/token.dart';
 
-class BottomNavigatorPage extends StatefulWidget {
-  const BottomNavigatorPage({super.key});
+class NavigationView extends StatefulWidget {
+  const NavigationView({super.key});
 
   @override
-  State<BottomNavigatorPage> createState() => _BottomNavigatorPageState();
+  State<NavigationView> createState() => _NavigationViewState();
 }
 
-class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
+class _NavigationViewState extends State<NavigationView> {
   Future<void> clearFavorites() async {
     await clearFavoriteTable();
-    FavoritePage.loading.value = true;
+    FavoriteView.loading.value = true;
   }
 
   List<Widget> pages = [
     const HomePage(),
-    const FavoritePage(),
+    const FavoriteView(),
   ];
 
   int currentIndex = 0;
@@ -46,8 +46,7 @@ class _BottomNavigatorPageState extends State<BottomNavigatorPage> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>
-                                    const PageControllerPage()));
+                                builder: (context) => const RootView()));
                       },
                     );
                   },

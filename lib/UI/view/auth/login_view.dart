@@ -1,54 +1,33 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/view/home/bottom_navigation_bar_view.dart';
-
+import 'package:word_nest/UI/view/home/navigation_view.dart';
 import 'package:word_nest/core/models/request/request_login_model.dart';
-
-import 'package:word_nest/core/services/routes/route.dart';
-import 'package:word_nest/core/services/http_service.dart';
+import 'package:word_nest/core/services/login_service.dart';
 import 'package:word_nest/core/token/token.dart';
-import 'package:word_nest/UI/utils/validators/validators.dart';
+import 'package:word_nest/UI/widgets/custom_snackbar.dart';
+import 'package:word_nest/UI/widgets/custom_text_field.dart';
+import 'package:word_nest/UI/widgets/custom_button.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:word_nest/UI/view/auth/auth_view.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
-  static late PageController pageController;
+class LoginView extends StatefulWidget {
+  const LoginView({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginView> createState() => _LoginViewState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginViewState extends State<LoginView> {
+  FocusNode tfFocusNode = FocusNode();
+  FocusNode tfFocusNode2 = FocusNode();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  bool obscureText = true;
+  bool visibilityOfVisibileIcon = false;
+  bool rememberMe = false;
+
   @override
   void initState() {
     super.initState();
-    listeners();
-  }
-
-  listeners() {
-    tfFocusNode.addListener(() {
-      if (tfFocusNode.hasFocus) {
-        setState(() {
-          isFocused1 = true;
-        });
-      } else {
-        setState(() {
-          isFocused1 = false;
-        });
-      }
-    });
-    tfFocusNode2.addListener(() {
-      if (tfFocusNode2.hasFocus) {
-        setState(() {
-          isFocused2 = true;
-        });
-      } else {
-        setState(() {
-          isFocused2 = false;
-        });
-      }
-    });
     passwordController.addListener(() {
       if (passwordController.text.isNotEmpty) {
         setState(() {
@@ -63,275 +42,149 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> _login() async {
-    setState(() {
-      responseLoading = true;
-    });
-    await HttpBase.post(
-            Routa.loginUrl,
-            LoginModel(
-                    email: emailController.text,
-                    password: passwordController.text)
-                .toJson())
-        .then((response) {
-      if (response.statusCode == 200) {
-        if (rememberMe) {
-          SharedPrefsHelper.createSharedPreferences();
-          SharedPrefsHelper.setToken(jsonDecode(response.body)["token"]);
-        }
-        if (mounted) {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const BottomNavigatorPage(),
-            ),
-          );
-        }
-        setState(() {
-          responseLoading = false;
-        });
-      } else {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                jsonDecode(response.body)['message'],
-              ),
-              behavior: SnackBarBehavior.floating,
-              backgroundColor: const Color.fromARGB(255, 36, 72, 101),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              margin: const EdgeInsets.all(10),
-            ),
-          );
-        }
-        setState(() {
-          responseLoading = false;
-        });
+    context.loaderOverlay.show();
+    try {
+      final response = await LoginService.login(RequestLoginModel(
+        email: emailController.text,
+        password: passwordController.text,
+      ));
+      if (rememberMe) {
+        SharedPrefsHelper.createSharedPreferences();
+        SharedPrefsHelper.setToken(response.token!);
       }
-      emailController.clear();
-      passwordController.clear();
-    });
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const NavigationView(),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        CustomSnackBar.show(
+            context, e.toString().replaceAll('Exception: ', ''));
+      }
+    }
+    context.loaderOverlay.hide();
+    emailController.clear();
+    passwordController.clear();
   }
-
-  FocusNode tfFocusNode = FocusNode();
-  FocusNode tfFocusNode2 = FocusNode();
-
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-
-  bool isFocused1 = false;
-  bool isFocused2 = false;
-
-  bool obscureText = true;
-
-  bool visibilityOfVisibileIcon = false;
-
-  late LoginModel loginModel;
-
-  bool responseLoading = false;
-
-  bool rememberMe = false;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.18,
-              ),
-              const SizedBox(
-                  width: 508 * 0.3,
-                  height: 417 * 0.3,
-                  child: Image(image: AssetImage('lib/core/assets/logo.png'))),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 20, bottom: 20, left: 15, right: 15),
-                child: Container(
-                  padding: const EdgeInsets.all(3),
-                  decoration: BoxDecoration(
-                    gradient: !isFocused1
-                        ? null
-                        : const LinearGradient(colors: [
-                            Color.fromARGB(255, 122, 199, 245),
-                            Color.fromARGB(255, 54, 92, 242)
-                          ]),
-                    borderRadius: const BorderRadius.all(Radius.circular(30)),
-                  ),
-                  child: TextFormField(
-                    validator: emailValidator,
+    return LoaderOverlay(
+      useDefaultLoading: true,
+      child: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.18,
+                ),
+                const SizedBox(
+                    width: 508 * 0.3,
+                    height: 417 * 0.3,
+                    child:
+                        Image(image: AssetImage('lib/core/assets/logo.png'))),
+                Padding(
+                  padding: const EdgeInsets.only(
+                      top: 20, bottom: 20, left: 15, right: 15),
+                  child: CustomTextField(
                     controller: emailController,
+                    hintText: 'E-mail',
                     focusNode: tfFocusNode,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.email),
-                      filled: true,
-                      fillColor: const Color.fromARGB(255, 213, 232, 251),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(30)),
-                        borderSide: !isFocused1
-                            ? const BorderSide(color: Colors.grey, width: 1)
-                            : BorderSide.none,
-                      ),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(30)),
-                        borderSide: BorderSide.none,
-                        //borderSide: BorderSide(color: Colors.blue, width: 3),
-                      ),
-                      hintText: 'E-mail',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                    ),
+                    icon: const Icon(Icons.email),
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (_) {},
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0, left: 15, right: 15),
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: !isFocused2
-                        ? null
-                        : const LinearGradient(colors: [
-                            Color.fromARGB(255, 122, 199, 245),
-                            Color.fromARGB(255, 54, 92, 242)
-                          ]),
-                    borderRadius: const BorderRadius.all(Radius.circular(30)),
-                  ),
-                  padding: const EdgeInsets.all(3),
-                  child: TextFormField(
+                Padding(
+                  padding:
+                      const EdgeInsets.only(bottom: 0, left: 15, right: 15),
+                  child: CustomTextField(
                     controller: passwordController,
-                    obscureText: obscureText,
+                    hintText: 'Password',
                     focusNode: tfFocusNode2,
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.lock),
-                      suffixIcon: IconButton(
-                        onPressed: () async {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
-                        },
-                        icon: Visibility(
-                          visible: visibilityOfVisibileIcon,
-                          child: Icon(!obscureText
-                              ? Icons.visibility
-                              : Icons.visibility_off),
-                        ),
-                      ),
-                      filled: true,
-                      fillColor: const Color.fromARGB(255, 213, 232, 251),
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(30)),
-                          borderSide: !isFocused2
-                              ? const BorderSide(color: Colors.grey, width: 1)
-                              : BorderSide.none),
-                      focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(30)),
-                          borderSide: BorderSide.none),
-                      hintText: 'Password',
-                      hintStyle: const TextStyle(color: Colors.grey),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Row(
-                  children: [
-                    Checkbox(
-                      checkColor: Colors.white,
-                      activeColor: Colors.green,
-                      value: rememberMe,
-                      onChanged: (bool? value) {
+                    obscureText: obscureText,
+                    icon: const Icon(Icons.lock),
+                    suffixIcon: IconButton(
+                      onPressed: () async {
                         setState(() {
-                          rememberMe = value ?? false;
+                          obscureText = !obscureText;
                         });
                       },
-                    ),
-                    const Text("Remember me")
-                  ],
-                ),
-              ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 30,
-                height: 54,
-                child: Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(colors: [
-                      Color.fromARGB(255, 122, 199, 245),
-                      Color.fromARGB(255, 50, 199, 245),
-                      Color.fromARGB(255, 122, 199, 245)
-                    ]),
-                    borderRadius: BorderRadius.all(Radius.circular(30)),
-                  ),
-                  child: TextButton(
-                    onPressed: () async {
-                      FocusScope.of(context).unfocus();
-                      if (passwordController.text.isNotEmpty &&
-                          emailController.text.isNotEmpty) {
-                        await _login();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: const Text("please enter all fields"),
-                            behavior: SnackBarBehavior.floating,
-                            backgroundColor:
-                                const Color.fromARGB(255, 36, 72, 101),
-                            margin: const EdgeInsets.all(10),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
-                          ),
-                        );
-                      }
-                    },
-                    child: const Text(
-                      "Login",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Don't you have an account?"),
-                  TextButton(
-                    onPressed: () {
-                      LoginPage.pageController.animateToPage(1,
-                          duration: const Duration(milliseconds: 200),
-                          curve: Curves.easeInOut);
-                    },
-                    child: const Text(
-                      "Sign up",
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.bold,
+                      icon: Visibility(
+                        visible: visibilityOfVisibileIcon,
+                        child: Icon(!obscureText
+                            ? Icons.visibility
+                            : Icons.visibility_off),
                       ),
                     ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).viewInsets.bottom > 0
-                    ? MediaQuery.of(context).viewInsets.bottom +
-                        MediaQuery.of(context).size.height * 0.01
-                    : 0,
-              )
-            ],
+                    onChanged: (_) {},
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 15),
+                  child: Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Colors.white,
+                        activeColor: Colors.green,
+                        value: rememberMe,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            rememberMe = value ?? false;
+                          });
+                        },
+                      ),
+                      const Text("Remember me")
+                    ],
+                  ),
+                ),
+                CustomButton(
+                  text: 'Login',
+                  onPressed: () async {
+                    FocusScope.of(context).unfocus();
+                    if (passwordController.text.isNotEmpty &&
+                        emailController.text.isNotEmpty) {
+                      await _login();
+                    } else {
+                      CustomSnackBar.show(context, "please enter all fields");
+                    }
+                  },
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text("Don't you have an account?"),
+                    TextButton(
+                      onPressed: () {
+                        AuthView.animateToPage(1);
+                      },
+                      child: const Text(
+                        "Sign up",
+                        style: TextStyle(
+                          decoration: TextDecoration.underline,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).viewInsets.bottom > 0
+                      ? MediaQuery.of(context).viewInsets.bottom +
+                          MediaQuery.of(context).size.height * 0.01
+                      : 0,
+                )
+              ],
+            ),
           ),
-        ),
-        responseLoading
-            ? Container(
-                color: Colors.black.withAlpha(125),
-                child: const Center(
-                    child: CircularProgressIndicator.adaptive(
-                  backgroundColor: Colors.white,
-                )))
-            : Container(),
-      ],
+        ],
+      ),
     );
   }
 }

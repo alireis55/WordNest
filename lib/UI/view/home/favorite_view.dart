@@ -3,16 +3,16 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:word_nest/core/database/database.dart';
 
-class FavoritePage extends StatefulWidget {
-  const FavoritePage({super.key});
+class FavoriteView extends StatefulWidget {
+  const FavoriteView({super.key});
 
   static ValueNotifier<bool> loading = ValueNotifier<bool>(true);
 
   @override
-  State<FavoritePage> createState() => _FavoritePageState();
+  State<FavoriteView> createState() => _FavoriteViewState();
 }
 
-class _FavoritePageState extends State<FavoritePage> {
+class _FavoriteViewState extends State<FavoriteView> {
   Future<void> showFavorites() async {
     final List favoritess = await getFavorites();
     setState(() {
@@ -21,7 +21,7 @@ class _FavoritePageState extends State<FavoritePage> {
     await Future.delayed(Duration.zero);
     if (mounted) {
       setState(() {
-        FavoritePage.loading.value = false;
+        FavoriteView.loading.value = false;
       });
     }
   }
@@ -30,10 +30,10 @@ class _FavoritePageState extends State<FavoritePage> {
   void initState() {
     super.initState();
     showFavorites();
-    FavoritePage.loading.addListener(() async {
-      if (FavoritePage.loading.value && mounted) {
+    FavoriteView.loading.addListener(() async {
+      if (FavoriteView.loading.value && mounted) {
         setState(() {
-          FavoritePage.loading.value = true;
+          FavoriteView.loading.value = true;
         });
         await showFavorites();
       }
@@ -44,7 +44,7 @@ class _FavoritePageState extends State<FavoritePage> {
 
   @override
   Widget build(BuildContext context) {
-    return FavoritePage.loading.value
+    return FavoriteView.loading.value
         ? const Center(
             child: CircularProgressIndicator(),
           )

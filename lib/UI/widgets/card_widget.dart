@@ -1,9 +1,8 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:word_nest/core/models/random_word_model.dart';
+import 'package:word_nest/core/models/response/response_random_word_model.dart';
 
-Widget containerCard(RandomWordModel? randomWordModel) {
+Widget containerCard(ResponseRandomWordModel? randomWord) {
   return ClipRRect(
     borderRadius: const BorderRadius.all(Radius.circular(20)),
     child: BackdropFilter(
@@ -31,30 +30,30 @@ Widget containerCard(RandomWordModel? randomWordModel) {
               'Word',
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
-            Text(randomWordModel!.word.word),
+            Text(randomWord?.word?.word ?? ''),
             const Text(
               'Pronunciation',
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
-            Text(randomWordModel.word.pronunciation),
+            Text(randomWord?.word?.pronunciation ?? ''),
             const Text(
               'Meaning',
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
             Text(
-              randomWordModel.word.meaning,
+              randomWord?.word?.meaning ?? '',
               textAlign: TextAlign.center,
             ),
             const Text(
               'Level',
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
-            Text(randomWordModel.word.level,
+            Text(randomWord?.word?.level ?? '',
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
-                    color: randomWordModel.word.level == 'beginner'
+                    color: randomWord?.word?.level == 'beginner'
                         ? Colors.green
-                        : randomWordModel.word.level == 'intermediate'
+                        : randomWord?.word?.level == 'intermediate'
                             ? Colors.orange
                             : const Color.fromARGB(255, 102, 13, 6))),
             const Text(
@@ -62,7 +61,7 @@ Widget containerCard(RandomWordModel? randomWordModel) {
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
             Text(
-              randomWordModel.word.example,
+              randomWord?.word?.example ?? '',
               textAlign: TextAlign.center,
             )
           ],

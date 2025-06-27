@@ -1,14 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:word_nest/UI/widgets/card_widget.dart';
 import 'package:word_nest/core/Cubit/word_cubit.dart';
 import 'package:word_nest/core/database/database.dart';
-import 'package:word_nest/core/models/random_word_model.dart';
-import 'package:word_nest/core/services/routes/route.dart';
-import 'package:word_nest/core/services/http_service.dart';
+import 'package:word_nest/core/services/random_word_service.dart';
+import 'package:word_nest/core/models/response/response_random_word_model.dart';
+import 'package:word_nest/core/token/token.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +16,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  bool loading = true;
+  CardSwiperController cardSwiperController = CardSwiperController();
+  int currentWordIndex = 0;
+
   @override
   void initState() {
     super.initState();
@@ -32,20 +34,24 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> getWords() async {
+    final token = await SharedPrefsHelper.getToken();
     for (int i = 0; i < 13; i++) {
-      await HttpBase.get(Routa.randomeUrl).then((response) {
-        final randomWord = RandomWordModel.fromJson(jsonDecode(response.body));
+      try {
+        final randomWord = await RandomWordService.getRandomWord(token ?? "");
         if (mounted) {
           if (context
               .read<WordCubit>()
               .state
-              .any((element) => element.word.word == randomWord.word.word)) {
+              .any((element) => element.word?.word == randomWord.word?.word)) {
             i--;
           } else {
             context.read<WordCubit>().addWord(randomWord);
           }
         }
-      });
+      } catch (e) {
+        // Hata yönetimi: İsterseniz burada kullanıcıya mesaj gösterebilirsiniz
+        break;
+      }
     }
     if (loading) {
       setState(() {
@@ -54,12 +60,6 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  bool loading = true;
-
-  CardSwiperController cardSwiperController = CardSwiperController();
-
-  int currentWordIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return loading
@@ -67,7 +67,13 @@ class _HomePageState extends State<HomePage> {
             child: CircularProgressIndicator.adaptive(),
           )
         : RefreshIndicator(
-            onRefresh: () async {},
+            onRefresh: () async {
+              setState(() {
+                loading = true;
+              });
+              context.read<WordCubit>().clearWords();
+              await getWords();
+            },
             child: SingleChildScrollView(
               physics: const AlwaysScrollableScrollPhysics(),
               child: ConstrainedBox(
@@ -90,8 +96,8 @@ class _HomePageState extends State<HomePage> {
                             height: 300,
                             width: 300,
                             child: SafeArea(
-                              child:
-                                  BlocBuilder<WordCubit, List<RandomWordModel>>(
+                              child: BlocBuilder<WordCubit,
+                                  List<ResponseRandomWordModel>>(
                                 builder: (context, state) {
                                   return CardSwiper(
                                       onSwipe: (previousIndex, currentIndex,
@@ -150,7 +156,7 @@ class _HomePageState extends State<HomePage> {
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     content: Text(
-                                        '${currentWord.word.word} added to favorites'),
+                                        '${currentWord.word?.word ?? "Word"} added to favorites'),
                                   ),
                                 );
                               });
