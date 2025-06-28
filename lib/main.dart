@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:word_nest/UI/view/root/root_view.dart';
-import 'package:word_nest/UI/widgets/custom_global_loader_overlay.dart';
-import 'package:word_nest/core/Cubit/token_cubit.dart';
-import 'package:word_nest/core/Cubit/word_cubit.dart';
-import 'package:word_nest/core/Cubit/authorization_cubit.dart';
-import 'package:word_nest/core/Cubit/connection_cubit.dart';
+import 'package:word_nest/ui/views/root/root_view.dart';
+import 'package:word_nest/ui/widgets/custom_global_loader_overlay.dart';
+import 'package:word_nest/core/cubits/cache_cubit.dart';
+import 'package:word_nest/core/cubits/word_cubit.dart';
+import 'package:word_nest/core/cubits/authorization_cubit.dart';
+import 'package:word_nest/core/cubits/connection_cubit.dart';
 
 void main() {
   runApp(

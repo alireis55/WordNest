@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
-import 'package:word_nest/UI/widgets/card_widget.dart';
-import 'package:word_nest/core/Cubit/word_cubit.dart';
-import 'package:word_nest/core/database/database.dart';
+import 'package:word_nest/core/cubits/word_cubit.dart';
+import 'package:word_nest/core/databases/database.dart';
+import 'package:word_nest/ui/widgets/card_widget.dart';
 import 'package:word_nest/core/services/random_word_service.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
-import 'package:word_nest/core/token/token.dart';
+import 'package:word_nest/core/services/shared_preferences_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

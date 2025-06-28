@@ -4,7 +4,7 @@ import 'package:word_nest/core/services/routes/route.dart';
 import 'package:word_nest/core/models/request/request_login_model.dart';
 import 'package:word_nest/core/models/response/response_login_model.dart';
 import 'dart:convert';
-import 'package:word_nest/core/error/custom_exception.dart';
+import 'package:word_nest/core/errors/custom_exception.dart';
 
 class LoginService {
   static Future<ResponseLoginModel> login(RequestLoginModel model) async {

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/core/errors/custom_exception.dart';
 import 'package:word_nest/core/services/register_service.dart';
 import 'package:word_nest/core/models/request/request_register_model.dart';
-import 'package:word_nest/UI/widgets/custom_snackbar.dart';
-import 'package:word_nest/UI/utils/validators/validators.dart';
-import 'package:word_nest/UI/widgets/custom_text_field.dart';
-import 'package:word_nest/UI/widgets/custom_button.dart';
+import 'package:word_nest/ui/views/auth/auth_view.dart';
+import 'package:word_nest/ui/widgets/custom_snackbar.dart';
+import 'package:word_nest/ui/utils/validators/validators.dart';
+import 'package:word_nest/ui/widgets/custom_text_field.dart';
+import 'package:word_nest/ui/widgets/custom_button.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:word_nest/UI/widgets/authorization_status_row.dart';
-import 'package:word_nest/UI/view/auth/auth_view.dart';
-import 'package:word_nest/core/error/custom_exception.dart';
+import 'package:word_nest/ui/widgets/authorization_status_row.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});

@@ -5,7 +5,7 @@ import 'package:word_nest/core/services/routes/route.dart';
 import 'package:word_nest/core/models/request/request_register_model.dart';
 import 'package:word_nest/core/models/response/response_register_model.dart';
 import 'dart:convert';
-import 'package:word_nest/core/error/custom_exception.dart';
+import 'package:word_nest/core/errors/custom_exception.dart';
 
 class RegisterService {
   static Future<ResponseRegisterModel> register(

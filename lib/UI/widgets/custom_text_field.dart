@@ -11,6 +11,7 @@ class CustomTextField extends StatefulWidget {
   final TextInputType? keyboardType;
   final EdgeInsetsGeometry padding;
   final Gradient? focusGradient;
+  final bool isPasswordTextField;
 
   const CustomTextField({
     super.key,
@@ -24,6 +25,7 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType,
     this.padding = const EdgeInsets.all(3),
     this.focusGradient,
+    this.isPasswordTextField = false,
   });
 
   @override
@@ -33,12 +35,14 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   late FocusNode _focusNode;
   bool _isFocused = false;
+  bool _obscureText = false;
 
   @override
   void initState() {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_handleFocusChange);
+    _obscureText = widget.obscureText;
   }
 
   void _handleFocusChange() {
@@ -74,12 +78,34 @@ class _CustomTextFieldState extends State<CustomTextField> {
       child: TextFormField(
         controller: widget.controller,
         focusNode: _focusNode,
-        obscureText: widget.obscureText,
-        onChanged: widget.onChanged,
+        obscureText:
+            widget.isPasswordTextField ? _obscureText : widget.obscureText,
+        onChanged: (value) {
+          if (widget.isPasswordTextField) {
+            setState(() {
+              _obscureText = value.isNotEmpty ? _obscureText : true;
+            });
+          }
+          if (widget.onChanged != null) widget.onChanged!(value);
+        },
         keyboardType: widget.keyboardType,
         decoration: InputDecoration(
           prefixIcon: widget.icon,
-          suffixIcon: widget.suffixIcon,
+          suffixIcon: widget.isPasswordTextField
+              ? (widget.suffixIcon ??
+                  (widget.controller.text.isNotEmpty
+                      ? IconButton(
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
+                          icon: Icon(_obscureText
+                              ? Icons.visibility_off
+                              : Icons.visibility),
+                        )
+                      : null))
+              : widget.suffixIcon,
           filled: true,
           fillColor: const Color.fromARGB(255, 213, 232, 251),
           hintText: widget.hintText,

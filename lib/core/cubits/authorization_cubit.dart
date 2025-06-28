@@ -1,5 +1,5 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:word_nest/core/token/token.dart';
+import 'package:word_nest/core/services/shared_preferences_service.dart';
 
 class AuthorizationCubit extends Cubit<bool> {
   AuthorizationCubit() : super(false);

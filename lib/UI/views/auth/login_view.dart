@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/view/home/navigation_view.dart';
-import 'package:word_nest/core/Cubit/token_cubit.dart';
+import 'package:word_nest/ui/views/home/navigation_view.dart';
+import 'package:word_nest/core/cubits/cache_cubit.dart';
 import 'package:word_nest/core/models/request/request_login_model.dart';
 import 'package:word_nest/core/services/login_service.dart';
-import 'package:word_nest/core/token/token.dart';
-import 'package:word_nest/UI/widgets/custom_snackbar.dart';
-import 'package:word_nest/UI/widgets/custom_text_field.dart';
-import 'package:word_nest/UI/widgets/custom_button.dart';
+import 'package:word_nest/core/services/shared_preferences_service.dart';
+import 'package:word_nest/ui/widgets/custom_snackbar.dart';
+import 'package:word_nest/ui/widgets/custom_text_field.dart';
+import 'package:word_nest/ui/widgets/custom_button.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:word_nest/UI/view/auth/auth_view.dart';
-import 'package:word_nest/core/error/custom_exception.dart';
+import 'package:word_nest/ui/views/auth/auth_view.dart';
+import 'package:word_nest/core/errors/custom_exception.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:word_nest/UI/utils/navigation_helper.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -20,28 +21,14 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  FocusNode tfFocusNode = FocusNode();
-  FocusNode tfFocusNode2 = FocusNode();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool obscureText = true;
-  bool visibilityOfVisibileIcon = false;
   bool rememberMe = false;
 
   @override
   void initState() {
     super.initState();
-    passwordController.addListener(() {
-      if (passwordController.text.isNotEmpty) {
-        setState(() {
-          visibilityOfVisibileIcon = true;
-        });
-      } else {
-        setState(() {
-          visibilityOfVisibileIcon = false;
-        });
-      }
-    });
   }
 
   Future<void> _login() async {
@@ -55,15 +42,12 @@ class _LoginViewState extends State<LoginView> {
         SharedPrefsHelper.createSharedPreferences();
         SharedPrefsHelper.setToken(response.token!);
       } else {
-        context.read<CacheCubit>().setToken(response.token!);
+        if (mounted) {
+          context.read<CacheCubit>().setToken(response.token!);
+        }
       }
       if (mounted) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const NavigationView(),
-          ),
-        );
+        NavigationHelper.pushReplacement(context, const NavigationView());
       }
     } on CustomException catch (e) {
       if (mounted) {
@@ -100,7 +84,6 @@ class _LoginViewState extends State<LoginView> {
                 child: CustomTextField(
                   controller: emailController,
                   hintText: 'E-mail',
-                  focusNode: tfFocusNode,
                   icon: const Icon(Icons.email),
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (_) {},
@@ -111,22 +94,9 @@ class _LoginViewState extends State<LoginView> {
                 child: CustomTextField(
                   controller: passwordController,
                   hintText: 'Password',
-                  focusNode: tfFocusNode2,
                   obscureText: obscureText,
                   icon: const Icon(Icons.lock),
-                  suffixIcon: IconButton(
-                    onPressed: () async {
-                      setState(() {
-                        obscureText = !obscureText;
-                      });
-                    },
-                    icon: Visibility(
-                      visible: visibilityOfVisibileIcon,
-                      child: Icon(!obscureText
-                          ? Icons.visibility
-                          : Icons.visibility_off),
-                    ),
-                  ),
+                  isPasswordTextField: true,
                   onChanged: (_) {},
                 ),
               ),
