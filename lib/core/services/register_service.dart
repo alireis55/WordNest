@@ -12,11 +12,15 @@ class RegisterService {
       RequestRegisterModel model) async {
     try {
       final response = await HttpBase.post(Routa.registerUrl, model.toJson());
+
       if (response.statusCode == 200) {
         return ResponseRegisterModel.fromJson(jsonDecode(response.body));
-      } else {
-        throw CustomException(response.statusCode);
       }
+
+      throw CustomException(response.statusCode);
+    } on CustomException catch (e, stackTrace) {
+      log('RegisterService error: $e', stackTrace: stackTrace);
+      rethrow;
     } catch (e, stackTrace) {
       log('RegisterService error: $e', stackTrace: stackTrace);
       throw CustomException(-1);

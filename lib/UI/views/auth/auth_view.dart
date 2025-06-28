@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:word_nest/UI/views/auth/login_view.dart';
 import 'package:word_nest/UI/views/auth/register_view.dart';
+import 'package:word_nest/ui/widgets/auth_background.dart';
 
 class AuthView extends StatefulWidget {
   const AuthView({super.key});
@@ -43,24 +44,6 @@ class _AuthViewState extends State<AuthView> {
           children: const [LoginView(), RegisterView()],
         ),
       ),
-    );
-  }
-}
-
-class AuthBackground extends StatelessWidget {
-  final Widget child;
-  const AuthBackground({required this.child, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/background.png'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: child,
     );
   }
 }

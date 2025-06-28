@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class AuthorizationStatusRow extends StatelessWidget {
+class ValidityStatusRow extends StatelessWidget {
   final bool isValid;
   final String text;
 
-  const AuthorizationStatusRow({
+  const ValidityStatusRow({
     super.key,
     required this.isValid,
     required this.text,

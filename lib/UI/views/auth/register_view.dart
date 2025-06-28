@@ -8,8 +8,8 @@ import 'package:word_nest/ui/utils/validators/validators.dart';
 import 'package:word_nest/ui/widgets/custom_text_field.dart';
 import 'package:word_nest/ui/widgets/custom_button.dart';
 import 'package:loader_overlay/loader_overlay.dart';
-import 'package:word_nest/ui/widgets/authorization_status_row.dart';
 import 'package:word_nest/ui/widgets/custom_back_button.dart';
+import 'package:word_nest/ui/widgets/validity_status_row.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -134,7 +134,7 @@ class _RegisterViewState extends State<RegisterView> {
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 20),
-              AuthorizationStatusRow(
+              ValidityStatusRow(
                   isValid: validations[0], text: 'Valid email adress'),
               const SizedBox(height: 20),
               CustomTextField(
@@ -146,20 +146,20 @@ class _RegisterViewState extends State<RegisterView> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  AuthorizationStatusRow(
+                  ValidityStatusRow(
                       isValid: validations[1], text: 'At least 6 characters'),
-                  AuthorizationStatusRow(
+                  ValidityStatusRow(
                       isValid: validations[2],
                       text: 'At least 1 special character'),
-                  AuthorizationStatusRow(
+                  ValidityStatusRow(
                       isValid: validations[3],
                       text: 'At least 1 uppercase letter'),
-                  AuthorizationStatusRow(
+                  ValidityStatusRow(
                       isValid: validations[4],
                       text: 'At least 1 lowercase letter'),
-                  AuthorizationStatusRow(
+                  ValidityStatusRow(
                       isValid: validations[5], text: 'At least 1 number'),
-                  AuthorizationStatusRow(
+                  ValidityStatusRow(
                       isValid: validations[6], text: 'Confirm password'),
                 ],
               ),

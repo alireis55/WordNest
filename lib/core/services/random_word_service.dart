@@ -10,11 +10,15 @@ class RandomWordService {
   static Future<ResponseRandomWordModel> getRandomWord(String token) async {
     try {
       final response = await HttpBase.get(Routa.randomeUrl);
+
       if (response.statusCode == 200) {
         return ResponseRandomWordModel.fromJson(jsonDecode(response.body));
-      } else {
-        throw CustomException(response.statusCode);
       }
+
+      throw CustomException(response.statusCode);
+    } on CustomException catch (e, stackTrace) {
+      log('RandomWordService error: $e', stackTrace: stackTrace);
+      rethrow;
     } catch (e, stackTrace) {
       log('RandomWordService error: $e', stackTrace: stackTrace);
       throw CustomException(-1);

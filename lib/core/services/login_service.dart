@@ -11,11 +11,15 @@ class LoginService {
     try {
       final response = await HttpBase.post(Routa.loginUrl, model.toJson());
       final body = ResponseLoginModel.fromJson(jsonDecode(response.body));
+
       if (response.statusCode == 200) {
         return body;
-      } else {
-        throw CustomException(response.statusCode);
       }
+
+      throw CustomException(response.statusCode);
+    } on CustomException catch (e, stackTrace) {
+      log('LoginService error: $e', stackTrace: stackTrace);
+      rethrow;
     } catch (e, stackTrace) {
       log('LoginService error: $e', stackTrace: stackTrace);
       throw CustomException(-1);

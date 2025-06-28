@@ -6,6 +6,7 @@ import 'package:word_nest/ui/views/root/root_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word_nest/core/cubits/authorization_cubit.dart';
 import 'package:word_nest/UI/utils/navigation_helper.dart';
+import 'package:word_nest/ui/widgets/navigation_background.dart';
 
 class NavigationView extends StatefulWidget {
   const NavigationView({super.key});
@@ -93,24 +94,6 @@ class _NavigationViewState extends State<NavigationView> {
         child: SafeArea(child: _pages[_currentIndex]),
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
-    );
-  }
-}
-
-class NavigationBackground extends StatelessWidget {
-  final Widget child;
-  const NavigationBackground({required this.child, super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('lib/core/assets/background2.png'),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: child,
     );
   }
 }
