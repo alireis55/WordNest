@@ -34,10 +34,21 @@ class _AuthViewState extends State<AuthView> {
 
   @override
   Widget build(BuildContext context) {
-    return PageView(
-      controller: AuthView.pageController,
-      physics: const NeverScrollableScrollPhysics(),
-      children: const [LoginView(), RegisterView()],
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/background.png'),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: PageView(
+          controller: AuthView.pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: const [LoginView(), RegisterView()],
+        ),
+      ),
     );
   }
 }

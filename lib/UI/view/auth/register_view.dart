@@ -8,6 +8,7 @@ import 'package:word_nest/UI/widgets/custom_button.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:word_nest/UI/widgets/authorization_status_row.dart';
 import 'package:word_nest/UI/view/auth/auth_view.dart';
+import 'package:word_nest/core/error/custom_exception.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -160,175 +161,173 @@ class _RegisterViewState extends State<RegisterView> {
         CustomSnackBar.show(context, response.message!);
         AuthView.animateToPage(0);
       }
+    } on CustomException catch (e) {
+      if (mounted) {
+        CustomSnackBar.show(context, e.toString());
+      }
     } catch (e) {
       if (mounted) {
-        CustomSnackBar.show(
-            context, e.toString().replaceAll('Exception: ', ''));
+        CustomSnackBar.show(context, 'Undefined Error');
       }
     }
-    context.loaderOverlay.hide();
+    if (mounted) {
+      context.loaderOverlay.hide();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return LoaderOverlay(
-      useDefaultLoading: true,
-      child: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: MediaQuery.of(context).size.height * 0.2,
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.2,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
+                child: CustomTextField(
+                  controller: userNameController,
+                  hintText: 'Username',
+                  focusNode: tfFocusNode1,
+                  onChanged: (_) {},
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                  child: CustomTextField(
-                    controller: userNameController,
-                    hintText: 'Username',
-                    focusNode: tfFocusNode1,
-                    onChanged: (_) {},
-                  ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
+                child: CustomTextField(
+                  controller: emailController,
+                  hintText: 'E-mail',
+                  focusNode: tfFocusNode2,
+                  keyboardType: TextInputType.emailAddress,
+                  onChanged: (_) {},
                 ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                  child: CustomTextField(
-                    controller: emailController,
-                    hintText: 'E-mail',
-                    focusNode: tfFocusNode2,
-                    keyboardType: TextInputType.emailAddress,
-                    onChanged: (_) {},
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 15),
-                  child: Row(
-                    children: [
-                      Icon(
-                        validIcon1 ? Icons.check_circle : Icons.cancel,
-                        color: validIcon1 ? Colors.green : Colors.red,
-                        size: 15,
-                      ),
-                      const Text(
-                        'Valid email address',
-                        style: TextStyle(),
-                      ),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                  child: CustomTextField(
-                    controller: passwordController,
-                    hintText: 'Password',
-                    focusNode: tfFocusNode3,
-                    obscureText: obscureText,
-                    suffixIcon: Visibility(
-                      visible: visibilityOfVisibileIcon1,
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
-                        },
-                        icon: obscureText
-                            ? const Icon(Icons.visibility_off)
-                            : const Icon(Icons.visibility),
-                      ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, bottom: 15),
+                child: Row(
+                  children: [
+                    Icon(
+                      validIcon1 ? Icons.check_circle : Icons.cancel,
+                      color: validIcon1 ? Colors.green : Colors.red,
+                      size: 15,
                     ),
-                    onChanged: (_) {},
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20, bottom: 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      AuthorizationStatusRow(
-                          isValid: validIcon1, text: 'Valid email address'),
-                      AuthorizationStatusRow(
-                          isValid: validIcon2, text: 'At least 6 characters'),
-                      AuthorizationStatusRow(
-                          isValid: validIcon3,
-                          text: 'At least 1 special character'),
-                      AuthorizationStatusRow(
-                          isValid: validIcon4,
-                          text: 'At least 1 uppercase letter'),
-                      AuthorizationStatusRow(
-                          isValid: validIcon5,
-                          text: 'At least 1 lowercase letter'),
-                      AuthorizationStatusRow(
-                          isValid: validIcon6, text: 'At least 1 number'),
-                      AuthorizationStatusRow(
-                          isValid: validIcon7, text: 'Confirm password'),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                  child: CustomTextField(
-                    controller: tfController4,
-                    hintText: 'Confirm Password',
-                    focusNode: tfFocusNode4,
-                    obscureText: obscureText,
-                    suffixIcon: Visibility(
-                      visible: visibilityOfVisibileIcon2,
-                      child: IconButton(
-                        onPressed: () {
-                          setState(() {
-                            obscureText = !obscureText;
-                          });
-                        },
-                        icon: obscureText
-                            ? const Icon(Icons.visibility_off)
-                            : const Icon(Icons.visibility),
-                      ),
+                    const Text(
+                      'Valid email address',
+                      style: TextStyle(),
                     ),
-                    onChanged: (_) {},
+                  ],
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
+                child: CustomTextField(
+                  controller: passwordController,
+                  hintText: 'Password',
+                  focusNode: tfFocusNode3,
+                  obscureText: obscureText,
+                  suffixIcon: Visibility(
+                    visible: visibilityOfVisibileIcon1,
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
+                      icon: obscureText
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
+                    ),
                   ),
+                  onChanged: (_) {},
                 ),
-                CustomButton(
-                  text: 'Sign Up',
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    if (validIcon1 &&
-                        validIcon2 &&
-                        validIcon3 &&
-                        validIcon4 &&
-                        validIcon5 &&
-                        validIcon6 &&
-                        validIcon7 &&
-                        userNameController.text.isNotEmpty) {
-                      register();
-                    } else {
-                      CustomSnackBar.show(context, "please enter all fields");
-                    }
-                  },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 20, bottom: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AuthorizationStatusRow(
+                        isValid: validIcon1, text: 'Valid email address'),
+                    AuthorizationStatusRow(
+                        isValid: validIcon2, text: 'At least 6 characters'),
+                    AuthorizationStatusRow(
+                        isValid: validIcon3,
+                        text: 'At least 1 special character'),
+                    AuthorizationStatusRow(
+                        isValid: validIcon4,
+                        text: 'At least 1 uppercase letter'),
+                    AuthorizationStatusRow(
+                        isValid: validIcon5,
+                        text: 'At least 1 lowercase letter'),
+                    AuthorizationStatusRow(
+                        isValid: validIcon6, text: 'At least 1 number'),
+                    AuthorizationStatusRow(
+                        isValid: validIcon7, text: 'Confirm password'),
+                  ],
                 ),
-                SizedBox(
-                  height: MediaQuery.of(context).viewInsets.bottom > 0
-                      ? MediaQuery.of(context).viewInsets.bottom +
-                          MediaQuery.of(context).size.height * 0.01
-                      : 0,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
+                child: CustomTextField(
+                  controller: tfController4,
+                  hintText: 'Confirm Password',
+                  focusNode: tfFocusNode4,
+                  obscureText: obscureText,
+                  suffixIcon: Visibility(
+                    visible: visibilityOfVisibileIcon2,
+                    child: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          obscureText = !obscureText;
+                        });
+                      },
+                      icon: obscureText
+                          ? const Icon(Icons.visibility_off)
+                          : const Icon(Icons.visibility),
+                    ),
+                  ),
+                  onChanged: (_) {},
                 ),
-              ],
-            ),
+              ),
+              CustomButton(
+                text: 'Sign Up',
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  if (validIcon1 &&
+                      validIcon2 &&
+                      validIcon3 &&
+                      validIcon4 &&
+                      validIcon5 &&
+                      validIcon6 &&
+                      validIcon7 &&
+                      userNameController.text.isNotEmpty) {
+                    register();
+                  } else {
+                    CustomSnackBar.show(context, "please enter all fields");
+                  }
+                },
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).viewInsets.bottom > 0
+                    ? MediaQuery.of(context).viewInsets.bottom +
+                        MediaQuery.of(context).size.height * 0.01
+                    : 0,
+              ),
+            ],
           ),
-          Positioned(
-              top: MediaQuery.of(context).padding.top,
-              left: 20,
-              child: IconButton(
-                  onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    AuthView.animateToPage(0);
-                  },
-                  icon: const Icon(Icons.arrow_back))),
-        ],
-      ),
+        ),
+        Positioned(
+            top: MediaQuery.of(context).padding.top,
+            left: 20,
+            child: IconButton(
+                onPressed: () {
+                  FocusScope.of(context).unfocus();
+                  AuthView.animateToPage(0);
+                },
+                icon: const Icon(Icons.arrow_back))),
+      ],
     );
   }
 }
