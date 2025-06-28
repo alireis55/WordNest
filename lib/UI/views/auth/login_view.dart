@@ -23,13 +23,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  bool obscureText = true;
   bool rememberMe = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   Future<void> _login() async {
     context.loaderOverlay.show();
@@ -68,6 +62,7 @@ class _LoginViewState extends State<LoginView> {
     return Stack(
       children: [
         SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -78,46 +73,37 @@ class _LoginViewState extends State<LoginView> {
                   width: 508 * 0.3,
                   height: 417 * 0.3,
                   child: Image(image: AssetImage('assets/logo.png'))),
-              Padding(
-                padding: const EdgeInsets.only(
-                    top: 20, bottom: 20, left: 15, right: 15),
-                child: CustomTextField(
-                  controller: emailController,
-                  hintText: 'E-mail',
-                  icon: const Icon(Icons.email),
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (_) {},
-                ),
+              const SizedBox(height: 20),
+              CustomTextField(
+                controller: emailController,
+                hintText: 'E-mail',
+                icon: const Icon(Icons.email),
+                keyboardType: TextInputType.emailAddress,
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 0, left: 15, right: 15),
-                child: CustomTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: obscureText,
-                  icon: const Icon(Icons.lock),
-                  isPasswordTextField: true,
-                  onChanged: (_) {},
-                ),
+              const SizedBox(height: 20),
+              CustomTextField(
+                controller: passwordController,
+                hintText: 'Password',
+                icon: const Icon(Icons.lock),
+                isPasswordTextField: true,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15),
-                child: Row(
-                  children: [
-                    Checkbox(
-                      checkColor: Colors.white,
-                      activeColor: Colors.green,
-                      value: rememberMe,
-                      onChanged: (bool? value) {
-                        setState(() {
-                          rememberMe = value ?? false;
-                        });
-                      },
-                    ),
-                    const Text("Remember me")
-                  ],
-                ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  Checkbox(
+                    checkColor: Colors.white,
+                    activeColor: Colors.green,
+                    value: rememberMe,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        rememberMe = value ?? false;
+                      });
+                    },
+                  ),
+                  const Text("Remember me")
+                ],
               ),
+              const SizedBox(height: 20),
               CustomButton(
                 text: 'Login',
                 onPressed: () async {
@@ -130,6 +116,7 @@ class _LoginViewState extends State<LoginView> {
                   }
                 },
               ),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

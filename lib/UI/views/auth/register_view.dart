@@ -9,6 +9,7 @@ import 'package:word_nest/ui/widgets/custom_text_field.dart';
 import 'package:word_nest/ui/widgets/custom_button.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:word_nest/ui/widgets/authorization_status_row.dart';
+import 'package:word_nest/ui/widgets/custom_back_button.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -18,135 +19,70 @@ class RegisterView extends StatefulWidget {
 }
 
 class _RegisterViewState extends State<RegisterView> {
-  FocusNode tfFocusNode1 = FocusNode();
-  FocusNode tfFocusNode2 = FocusNode();
-  FocusNode tfFocusNode3 = FocusNode();
-  FocusNode tfFocusNode4 = FocusNode();
-
   TextEditingController userNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  TextEditingController tfController4 = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
 
-  bool validIcon1 = false;
-  bool validIcon2 = false;
-  bool validIcon3 = false;
-  bool validIcon4 = false;
-  bool validIcon5 = false;
-  bool validIcon6 = false;
-  bool validIcon7 = false;
-
-  bool obscureText = true;
-  bool visibilityOfVisibileIcon1 = false;
-  bool visibilityOfVisibileIcon2 = false;
+  List<bool> validations = List.filled(7, false);
 
   @override
   void initState() {
     super.initState();
-    emailController.addListener(() {
-      if (emailValidator(emailController.text) == null) {
-        setState(() {
-          validIcon1 = true;
-        });
-      } else {
-        setState(() {
-          validIcon1 = false;
-        });
+    emailController.addListener(_validateEmail);
+    passwordController.addListener(_validatePassword);
+    confirmPasswordController.addListener(_validateConfirmPassword);
+  }
+
+  @override
+  void dispose() {
+    userNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  void _validateEmail() {
+    final isValid = emailValidator(emailController.text) == null;
+    if (validations[0] != isValid) {
+      setState(() {
+        validations[0] = isValid;
+      });
+    }
+  }
+
+  void _validatePassword() {
+    final newValidations = [
+      PasswordValidator.validate6Charecter(passwordController.text) == null,
+      PasswordValidator.validateSpecialCharecter(passwordController.text) ==
+          null,
+      PasswordValidator.validateUpperCase(passwordController.text) == null,
+      PasswordValidator.validateLowerCase(passwordController.text) == null,
+      PasswordValidator.validateNumber(passwordController.text) == null,
+    ];
+
+    bool needsUpdate = false;
+    for (int i = 0; i < 5; i++) {
+      if (validations[i + 1] != newValidations[i]) {
+        validations[i + 1] = newValidations[i];
+        needsUpdate = true;
       }
-    });
-    passwordController.addListener(() {
-      if (PasswordValidator.validate6Charecter(passwordController.text) ==
-          null) {
-        setState(() {
-          validIcon2 = true;
-        });
-      } else {
-        setState(() {
-          validIcon2 = false;
-        });
-      }
-      if (PasswordValidator.validateSpecialCharecter(passwordController.text) ==
-          null) {
-        setState(() {
-          validIcon3 = true;
-        });
-      } else {
-        setState(() {
-          validIcon3 = false;
-        });
-      }
-      if (PasswordValidator.validateUpperCase(passwordController.text) ==
-          null) {
-        setState(() {
-          validIcon4 = true;
-        });
-      } else {
-        setState(() {
-          validIcon4 = false;
-        });
-      }
-      if (PasswordValidator.validateLowerCase(passwordController.text) ==
-          null) {
-        setState(() {
-          validIcon5 = true;
-        });
-      } else {
-        setState(() {
-          validIcon5 = false;
-        });
-      }
-      if (PasswordValidator.validateNumber(passwordController.text) == null) {
-        setState(() {
-          validIcon6 = true;
-        });
-      } else {
-        setState(() {
-          validIcon6 = false;
-        });
-      }
-    });
-    passwordController.addListener(() {
-      if (passwordController.text.isNotEmpty) {
-        tfController4.addListener(() {
-          if (passwordController.text == tfController4.text &&
-              tfController4.text.isNotEmpty) {
-            setState(() {
-              validIcon7 = true;
-            });
-          } else {
-            setState(() {
-              validIcon7 = false;
-            });
-          }
-        });
-      } else {
-        setState(() {
-          validIcon7 = false;
-        });
-      }
-    });
-    passwordController.addListener(() {
-      if (passwordController.text.isNotEmpty) {
-        setState(() {
-          visibilityOfVisibileIcon1 = true;
-        });
-      } else {
-        setState(() {
-          visibilityOfVisibileIcon1 = false;
-        });
-      }
-    });
-    tfController4.addListener(() {
-      if (tfController4.text.isNotEmpty) {
-        setState(() {
-          visibilityOfVisibileIcon2 = true;
-        });
-      } else {
-        setState(() {
-          visibilityOfVisibileIcon2 = false;
-        });
-      }
-    });
+    }
+
+    if (needsUpdate) {
+      setState(() {});
+    }
+  }
+
+  void _validateConfirmPassword() {
+    final isValid = passwordController.text == confirmPasswordController.text &&
+        confirmPasswordController.text.isNotEmpty;
+    if (validations[6] != isValid) {
+      setState(() {
+        validations[6] = isValid;
+      });
+    }
   }
 
   Future<void> register() async {
@@ -175,134 +111,70 @@ class _RegisterViewState extends State<RegisterView> {
     }
   }
 
+  bool get _isFormValid =>
+      validations.every((v) => v) && userNameController.text.isNotEmpty;
+
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
         SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 15),
           child: Column(
             children: [
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.2,
+              SizedBox(height: MediaQuery.of(context).size.height * 0.2),
+              CustomTextField(
+                controller: userNameController,
+                hintText: 'Username',
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                child: CustomTextField(
-                  controller: userNameController,
-                  hintText: 'Username',
-                  focusNode: tfFocusNode1,
-                  onChanged: (_) {},
-                ),
+              const SizedBox(height: 20),
+              CustomTextField(
+                controller: emailController,
+                hintText: 'E-mail',
+                keyboardType: TextInputType.emailAddress,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                child: CustomTextField(
-                  controller: emailController,
-                  hintText: 'E-mail',
-                  focusNode: tfFocusNode2,
-                  keyboardType: TextInputType.emailAddress,
-                  onChanged: (_) {},
-                ),
+              const SizedBox(height: 20),
+              AuthorizationStatusRow(
+                  isValid: validations[0], text: 'Valid email adress'),
+              const SizedBox(height: 20),
+              CustomTextField(
+                controller: passwordController,
+                hintText: 'Password',
+                isPasswordTextField: true,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, bottom: 15),
-                child: Row(
-                  children: [
-                    Icon(
-                      validIcon1 ? Icons.check_circle : Icons.cancel,
-                      color: validIcon1 ? Colors.green : Colors.red,
-                      size: 15,
-                    ),
-                    const Text(
-                      'Valid email address',
-                      style: TextStyle(),
-                    ),
-                  ],
-                ),
+              const SizedBox(height: 20),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AuthorizationStatusRow(
+                      isValid: validations[1], text: 'At least 6 characters'),
+                  AuthorizationStatusRow(
+                      isValid: validations[2],
+                      text: 'At least 1 special character'),
+                  AuthorizationStatusRow(
+                      isValid: validations[3],
+                      text: 'At least 1 uppercase letter'),
+                  AuthorizationStatusRow(
+                      isValid: validations[4],
+                      text: 'At least 1 lowercase letter'),
+                  AuthorizationStatusRow(
+                      isValid: validations[5], text: 'At least 1 number'),
+                  AuthorizationStatusRow(
+                      isValid: validations[6], text: 'Confirm password'),
+                ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                child: CustomTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  focusNode: tfFocusNode3,
-                  obscureText: obscureText,
-                  suffixIcon: Visibility(
-                    visible: visibilityOfVisibileIcon1,
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          obscureText = !obscureText;
-                        });
-                      },
-                      icon: obscureText
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                    ),
-                  ),
-                  onChanged: (_) {},
-                ),
+              const SizedBox(height: 20),
+              CustomTextField(
+                controller: confirmPasswordController,
+                hintText: 'Confirm Password',
+                isPasswordTextField: true,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 20, bottom: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AuthorizationStatusRow(
-                        isValid: validIcon1, text: 'Valid email address'),
-                    AuthorizationStatusRow(
-                        isValid: validIcon2, text: 'At least 6 characters'),
-                    AuthorizationStatusRow(
-                        isValid: validIcon3,
-                        text: 'At least 1 special character'),
-                    AuthorizationStatusRow(
-                        isValid: validIcon4,
-                        text: 'At least 1 uppercase letter'),
-                    AuthorizationStatusRow(
-                        isValid: validIcon5,
-                        text: 'At least 1 lowercase letter'),
-                    AuthorizationStatusRow(
-                        isValid: validIcon6, text: 'At least 1 number'),
-                    AuthorizationStatusRow(
-                        isValid: validIcon7, text: 'Confirm password'),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                child: CustomTextField(
-                  controller: tfController4,
-                  hintText: 'Confirm Password',
-                  focusNode: tfFocusNode4,
-                  obscureText: obscureText,
-                  suffixIcon: Visibility(
-                    visible: visibilityOfVisibileIcon2,
-                    child: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          obscureText = !obscureText;
-                        });
-                      },
-                      icon: obscureText
-                          ? const Icon(Icons.visibility_off)
-                          : const Icon(Icons.visibility),
-                    ),
-                  ),
-                  onChanged: (_) {},
-                ),
-              ),
+              const SizedBox(height: 20),
               CustomButton(
                 text: 'Sign Up',
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  if (validIcon1 &&
-                      validIcon2 &&
-                      validIcon3 &&
-                      validIcon4 &&
-                      validIcon5 &&
-                      validIcon6 &&
-                      validIcon7 &&
-                      userNameController.text.isNotEmpty) {
+                  if (_isFormValid) {
                     register();
                   } else {
                     CustomSnackBar.show(context, "please enter all fields");
@@ -318,15 +190,12 @@ class _RegisterViewState extends State<RegisterView> {
             ],
           ),
         ),
-        Positioned(
-            top: MediaQuery.of(context).padding.top,
-            left: 20,
-            child: IconButton(
-                onPressed: () {
-                  FocusScope.of(context).unfocus();
-                  AuthView.animateToPage(0);
-                },
-                icon: const Icon(Icons.arrow_back))),
+        CustomBackButton(
+          onPressed: () {
+            FocusScope.of(context).unfocus();
+            AuthView.animateToPage(0);
+          },
+        ),
       ],
     );
   }

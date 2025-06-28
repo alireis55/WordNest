@@ -42,7 +42,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     super.initState();
     _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(_handleFocusChange);
-    _obscureText = widget.obscureText;
+    _obscureText = widget.isPasswordTextField ? true : widget.obscureText;
   }
 
   void _handleFocusChange() {
