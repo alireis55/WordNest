@@ -32,12 +32,12 @@ class _LoginViewState extends State<LoginView> {
         email: emailController.text,
         password: passwordController.text,
       ));
+      debugPrint('Gelen token: ${response.token}');
       if (rememberMe) {
-        SharedPrefsHelper.createSharedPreferences();
-        SharedPrefsHelper.setToken(response.token!);
+        await SharedPrefsHelper.setToken(response.token);
       } else {
         if (mounted) {
-          context.read<CacheCubit>().setToken(response.token!);
+          context.read<CacheCubit>().setToken(response.token);
         }
       }
       if (mounted) {

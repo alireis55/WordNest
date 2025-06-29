@@ -2,12 +2,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
 
-class WordCubit extends Cubit<List<ResponseRandomWordModel>> {
+class WordCubit extends Cubit<List<Word>> {
   WordCubit() : super([]);
 
   void addWord(ResponseRandomWordModel randomWord) {
-    state.add(randomWord);
-    emit(state);
+    if (randomWord.word != null) {
+      state.add(randomWord.word!);
+      emit(state);
+    }
   }
 
   void clearWords() {

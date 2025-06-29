@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:word_nest/core/services/http_service.dart';
 import 'package:word_nest/core/services/routes/route.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
@@ -7,9 +8,10 @@ import 'dart:convert';
 import 'package:word_nest/core/errors/custom_exception.dart';
 
 class RandomWordService {
-  static Future<ResponseRandomWordModel> getRandomWord(String token) async {
+  static Future<ResponseRandomWordModel> getRandomWord(
+      BuildContext context) async {
     try {
-      final response = await HttpBase.get(Routa.randomeUrl);
+      final response = await HttpBase.get(Routa.randomeUrl, context);
 
       if (response.statusCode == 200) {
         return ResponseRandomWordModel.fromJson(jsonDecode(response.body));

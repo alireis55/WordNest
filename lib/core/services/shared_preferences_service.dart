@@ -14,7 +14,7 @@ class SharedPrefsHelper {
 
   static Future<String?> getToken() async {
     await createSharedPreferences();
-    return SharedPrefsHelper._prefs?.getString("token") ?? "";
+    return SharedPrefsHelper._prefs?.getString("token");
   }
 
   static Future<void> deleteToken() async {

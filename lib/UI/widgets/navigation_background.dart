@@ -9,7 +9,7 @@ class NavigationBackground extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         image: DecorationImage(
-          image: AssetImage('lib/core/assets/background2.png'),
+          image: AssetImage('assets/background2.png'),
           fit: BoxFit.cover,
         ),
       ),

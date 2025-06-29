@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:word_nest/UI/views/home/word_view.dart';
 import 'package:word_nest/core/databases/database.dart';
 import 'package:word_nest/ui/views/home/favorite_View.dart';
+import 'package:word_nest/ui/views/home/home_view.dart';
 import 'package:word_nest/ui/views/root/root_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word_nest/core/cubits/authorization_cubit.dart';
@@ -16,7 +16,7 @@ class NavigationView extends StatefulWidget {
 }
 
 class _NavigationViewState extends State<NavigationView> {
-  final List<Widget> _pages = const [HomePage(), FavoriteView()];
+  final List<Widget> _pages = const [HomeView(), FavoriteView()];
   int _currentIndex = 0;
 
   Future<void> _clearFavorites() async {

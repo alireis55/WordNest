@@ -4,22 +4,18 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
-import 'package:word_nest/core/cubits/cache_cubit.dart';
-import 'package:word_nest/core/services/shared_preferences_service.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:word_nest/core/services/token_service.dart';
 
 class HttpBase {
   static const _timeoutDuration = Duration(seconds: 15);
 
   static Future<http.Response> get(
-    String url, {
-    BuildContext? context,
-  }) async {
+    String url,
+    BuildContext context,
+  ) async {
     try {
-      String? token;
-      if (context != null) {
-        token = await getToken(context);
-      }
+      final token = await TokenService.getToken(context);
+      debugPrint('Gönderilecek token: $token');
       final headers = _buildHeaders(token: token);
       final response = await http
           .get(Uri.parse(url), headers: headers)
@@ -70,15 +66,5 @@ class HttpBase {
     return {
       'Content-Type': 'application/json',
     };
-  }
-
-  static Future<String> getToken(BuildContext context) async {
-    final cacheToken = context.read<CacheCubit>().state as String;
-    final savedToken = await SharedPrefsHelper.getToken();
-    if (savedToken != null && savedToken.isNotEmpty) {
-      return savedToken;
-    } else {
-      return cacheToken;
-    }
   }
 }
