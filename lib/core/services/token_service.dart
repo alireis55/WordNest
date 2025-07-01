@@ -7,7 +7,6 @@ class TokenService {
   static Future<String> getToken(BuildContext context) async {
     final cacheToken = context.read<CacheCubit>().state;
     final savedToken = await SharedPrefsHelper.getToken();
-    print(savedToken);
     if (savedToken != null && savedToken.isNotEmpty) {
       'saved tokne has returned';
       return savedToken;
