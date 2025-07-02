@@ -22,4 +22,8 @@ class FavoriteCubit extends Cubit<List<Map<String, dynamic>>> {
   void clearFavorites() {
     emit([]);
   }
+
+  void deleteFavorite(int id) {
+    emit(state.where((fav) => fav['id'] != id).toList());
+  }
 }

@@ -310,6 +310,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "7.0.2"
+  flutter_dismissible_tile:
+    dependency: "direct main"
+    description:
+      name: flutter_dismissible_tile
+      sha256: fb3edf5312f9e5a2bd4e22485a22bfeb5949e2fde94e5001cd811100c02e901f
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter_launcher_icons:
     dependency: "direct main"
     description:

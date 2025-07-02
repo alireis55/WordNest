@@ -47,4 +47,11 @@ class LocalStorage {
     final List<Map<String, dynamic>> maps = await db.query('favorites');
     return maps;
   }
+
+  static Future<void> deleteFavoriteById(int id) async {
+    final Database db = await openDatabase(
+      join(await getDatabasesPath(), 'favorites_database.db'),
+    );
+    await db.delete('favorites', where: 'id = ?', whereArgs: [id]);
+  }
 }

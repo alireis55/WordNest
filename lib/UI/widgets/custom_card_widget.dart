@@ -21,7 +21,7 @@ class CustomCardWidget extends StatelessWidget {
       this.contentColor = const Color.fromARGB(255, 31, 31, 31),
       this.borderColor = const Color.fromARGB(255, 255, 247, 247),
       this.borderRadius = 20,
-      this.fontSize = 15,
+      this.fontSize = 18,
       this.borderWidth = 3,
       this.blurSigma = 50,
       this.backgroundColor,
