@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:word_nest/core/services/token_service.dart';
+import 'package:logger/logger.dart';
 
 class HttpBase {
   static const _timeoutDuration = Duration(seconds: 15);
@@ -15,20 +15,19 @@ class HttpBase {
   ) async {
     try {
       final token = await TokenService.getToken(context);
-      debugPrint('Gönderilecek token: $token');
       final headers = _buildHeaders(token: token);
       final response = await http
           .get(Uri.parse(url), headers: headers)
           .timeout(_timeoutDuration);
       return response;
     } on SocketException {
-      log('HttpBase.get error: No Connection');
+      Logger().e('HttpBase.get error: No Connection');
       rethrow;
     } on TimeoutException {
-      log('HttpBase.get error: Timeout');
+      Logger().e('HttpBase.get error: Timeout');
       rethrow;
     } catch (e, stackTrace) {
-      log('HttpBase.get error: $e', stackTrace: stackTrace);
+      Logger().e('HttpBase.get error: $e', error: e, stackTrace: stackTrace);
       rethrow;
     }
   }
@@ -43,15 +42,16 @@ class HttpBase {
             body: jsonEncode(body),
           )
           .timeout(_timeoutDuration);
+      debugPrint('Response: ${response.body}');
       return response;
     } on SocketException {
-      log('HttpBase.post error: No Connection');
+      Logger().e('HttpBase.post error: No Connection');
       rethrow;
     } on TimeoutException {
-      log('HttpBase.post error: Timeout');
+      Logger().e('HttpBase.post error: Timeout');
       rethrow;
     } catch (e, stackTrace) {
-      log('HttpBase.post error: $e', stackTrace: stackTrace);
+      Logger().e('HttpBase.post error: $e', error: e, stackTrace: stackTrace);
       rethrow;
     }
   }

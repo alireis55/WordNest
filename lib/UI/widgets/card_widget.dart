@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
 
-Widget containerCard(ResponseRandomWordModel? randomWord) {
+Widget cardWidget(Word? randomWord) {
   return ClipRRect(
     borderRadius: const BorderRadius.all(Radius.circular(20)),
     child: BackdropFilter(
@@ -30,30 +30,30 @@ Widget containerCard(ResponseRandomWordModel? randomWord) {
               'Word',
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
-            Text(randomWord?.word?.word ?? ''),
+            Text(randomWord?.word ?? ''),
             const Text(
               'Pronunciation',
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
-            Text(randomWord?.word?.pronunciation ?? ''),
+            Text(randomWord?.pronunciation ?? ''),
             const Text(
               'Meaning',
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
             Text(
-              randomWord?.word?.meaning ?? '',
+              randomWord?.meaning ?? '',
               textAlign: TextAlign.center,
             ),
             const Text(
               'Level',
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
-            Text(randomWord?.word?.level ?? '',
+            Text(randomWord?.level ?? '',
                 style: TextStyle(
                     fontWeight: FontWeight.w800,
-                    color: randomWord?.word?.level == 'beginner'
+                    color: randomWord?.level == 'beginner'
                         ? Colors.green
-                        : randomWord?.word?.level == 'intermediate'
+                        : randomWord?.level == 'intermediate'
                             ? Colors.orange
                             : const Color.fromARGB(255, 102, 13, 6))),
             const Text(
@@ -61,7 +61,7 @@ Widget containerCard(ResponseRandomWordModel? randomWord) {
               style: TextStyle(fontWeight: FontWeight.w800, color: Colors.red),
             ),
             Text(
-              randomWord?.word?.example ?? '',
+              randomWord?.example ?? '',
               textAlign: TextAlign.center,
             )
           ],

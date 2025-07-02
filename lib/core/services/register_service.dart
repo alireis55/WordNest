@@ -1,11 +1,10 @@
-import 'dart:developer';
-
 import 'package:word_nest/core/services/http_service.dart';
 import 'package:word_nest/core/services/routes/route.dart';
 import 'package:word_nest/core/models/request/request_register_model.dart';
 import 'package:word_nest/core/models/response/response_register_model.dart';
 import 'dart:convert';
 import 'package:word_nest/core/errors/custom_exception.dart';
+import 'package:logger/logger.dart';
 
 class RegisterService {
   static Future<ResponseRegisterModel> register(
@@ -19,10 +18,10 @@ class RegisterService {
 
       throw CustomException(response.statusCode);
     } on CustomException catch (e, stackTrace) {
-      log('RegisterService error: $e', stackTrace: stackTrace);
+      Logger().e('RegisterService error: $e', error: e, stackTrace: stackTrace);
       rethrow;
     } catch (e, stackTrace) {
-      log('RegisterService error: $e', stackTrace: stackTrace);
+      Logger().e('RegisterService error: $e', error: e, stackTrace: stackTrace);
       throw CustomException(-1);
     }
   }

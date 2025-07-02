@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -9,6 +7,8 @@ import 'package:word_nest/core/databases/database.dart';
 import 'package:word_nest/ui/widgets/card_widget.dart';
 import 'package:word_nest/core/services/random_word_service.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
+import 'package:logger/logger.dart';
+import 'package:word_nest/ui/widgets/custom_refresh_indicator.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -25,14 +25,16 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
     if (context.read<WordCubit>().state.isEmpty) {
-      getWords(context);
+      getWords(context, true);
     }
     createDatabase();
   }
 
-  Future<void> getWords(BuildContext content) async {
-    context.loaderOverlay.show();
-    for (int i = 0; i < 13; i++) {
+  Future<void> getWords(BuildContext content, bool showCircularBar) async {
+    if (showCircularBar) {
+      context.loaderOverlay.show();
+    }
+    for (int i = 0; i < 6; i++) {
       try {
         final randomWord = await RandomWordService.getRandomWord(context);
         if (mounted) {
@@ -40,26 +42,34 @@ class _HomeViewState extends State<HomeView> {
               .read<WordCubit>()
               .state
               .any((element) => element.word == randomWord.word?.word)) {
+            debugPrint('word already exist: ${randomWord.word?.word}');
             i--;
           } else {
+            debugPrint('added to list: ${randomWord.word?.word}');
             context.read<WordCubit>().addWord(randomWord);
           }
         }
       } catch (e, stackTrace) {
-        log('RandomWordService error: $e', stackTrace: stackTrace);
+        Logger()
+            .e('RandomWordService error: $e', error: e, stackTrace: stackTrace);
+      }
+      if (mounted) {
+        debugPrint('state lenght: ${content.read<WordCubit>().state.length}');
       }
     }
-    if (mounted) {
-      context.loaderOverlay.hide();
+    if (showCircularBar) {
+      if (mounted) {
+        context.loaderOverlay.hide();
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
+    return MyCustomRefreshIndicator(
       onRefresh: () async {
         context.read<WordCubit>().clearWords();
-        await getWords(context);
+        getWords(context, true);
       },
       child: SingleChildScrollView(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -85,32 +95,32 @@ class _HomeViewState extends State<HomeView> {
                       child: SafeArea(
                         child: BlocBuilder<WordCubit, List<Word>>(
                           builder: (context, state) {
-                            if (state.isEmpty) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
+                            if (context.loaderOverlay.visible) {
+                              return const SizedBox();
+                            } else {
+                              return CardSwiper(
+                                  onSwipe:
+                                      (previousIndex, currentIndex, direction) {
+                                    if (currentIndex == state.length - 4) {
+                                      getWords(context, false);
+                                    }
+                                    setState(() {
+                                      currentWordIndex = currentIndex ?? 0;
+                                    });
+                                    return true;
+                                  },
+                                  controller: cardSwiperController,
+                                  backCardOffset: const Offset(30, 30),
+                                  padding: const EdgeInsets.all(5),
+                                  duration: const Duration(milliseconds: 350),
+                                  numberOfCardsDisplayed: 3,
+                                  cardBuilder: (context,
+                                          index,
+                                          percentThresholdX,
+                                          percentThresholdY) =>
+                                      cardWidget(state[index]),
+                                  cardsCount: state.length);
                             }
-                            return CardSwiper(
-                                onSwipe:
-                                    (previousIndex, currentIndex, direction) {
-                                  if (currentIndex == state.length - 10) {
-                                    getWords(context);
-                                  }
-                                  setState(() {
-                                    currentWordIndex = currentIndex ?? 0;
-                                  });
-                                  return true;
-                                },
-                                controller: cardSwiperController,
-                                backCardOffset: const Offset(30, 30),
-                                padding: const EdgeInsets.all(5),
-                                duration: const Duration(milliseconds: 350),
-                                numberOfCardsDisplayed: 3,
-                                cardBuilder: (context, index, percentThresholdX,
-                                        percentThresholdY) =>
-                                    containerCard(ResponseRandomWordModel(
-                                        word: state[index])),
-                                cardsCount: state.length);
                           },
                         ),
                       ),

@@ -7,18 +7,12 @@ class WordCubit extends Cubit<List<Word>> {
 
   void addWord(ResponseRandomWordModel randomWord) {
     if (randomWord.word != null) {
-      state.add(randomWord.word!);
-      emit(state);
+      emit([...state, randomWord.word!]);
     }
   }
 
   void clearWords() {
     state.clear();
-    emit(state);
-  }
-
-  void removeFisrtWord() {
-    state.removeAt(0);
-    emit(state);
+    emit([]);
   }
 }

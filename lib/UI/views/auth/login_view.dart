@@ -32,7 +32,6 @@ class _LoginViewState extends State<LoginView> {
         email: emailController.text,
         password: passwordController.text,
       ));
-      debugPrint('Gelen token: ${response.token}');
       if (rememberMe) {
         await SharedPrefsHelper.setToken(response.token);
       } else {
