@@ -9,6 +9,8 @@ import 'package:word_nest/core/services/random_word_service.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
 import 'package:logger/logger.dart';
 import 'package:word_nest/ui/widgets/custom_refresh_indicator.dart';
+import 'package:word_nest/ui/utils/device_info.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -75,12 +77,7 @@ class _HomeViewState extends State<HomeView> {
         physics: const AlwaysScrollableScrollPhysics(),
         child: ConstrainedBox(
           constraints: BoxConstraints(
-            minHeight: MediaQuery.of(context).size.height -
-                AppBar().preferredSize.height -
-                MediaQuery.of(context).padding.top -
-                56 -
-                MediaQuery.of(context).padding.bottom -
-                100,
+            minHeight: AppSizes.getMinConstraintsHeight(context),
           ),
           child: Column(
             children: [
