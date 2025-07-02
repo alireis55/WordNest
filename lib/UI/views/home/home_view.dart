@@ -10,6 +10,7 @@ import 'package:word_nest/core/models/response/response_random_word_model.dart';
 import 'package:logger/logger.dart';
 import 'package:word_nest/ui/widgets/custom_refresh_indicator.dart';
 import 'package:word_nest/ui/utils/app_sizes.dart';
+import 'package:word_nest/ui/widgets/custom_card_swiper.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -90,34 +91,25 @@ class _HomeViewState extends State<HomeView> {
                       width: 300,
                       child: SafeArea(
                         child: BlocBuilder<WordCubit, List<Word>>(
-                          builder: (context, state) {
-                            if (context.loaderOverlay.visible) {
-                              return const SizedBox();
-                            } else {
-                              return CardSwiper(
-                                  onSwipe:
-                                      (previousIndex, currentIndex, direction) {
-                                    if (currentIndex == state.length - 4) {
-                                      getWords(context, false);
-                                    }
-                                    setState(() {
-                                      currentWordIndex = currentIndex ?? 0;
-                                    });
-                                    return true;
-                                  },
-                                  controller: cardSwiperController,
-                                  backCardOffset: const Offset(30, 30),
-                                  padding: const EdgeInsets.all(5),
-                                  duration: const Duration(milliseconds: 350),
-                                  numberOfCardsDisplayed: 3,
-                                  cardBuilder: (context,
-                                          index,
-                                          percentThresholdX,
-                                          percentThresholdY) =>
-                                      CustomCardWidget(
-                                          randomWord: state[index]),
-                                  cardsCount: state.length);
-                            }
+                          builder: (context, words) {
+                            return CustomCardSwiper(
+                              words: words,
+                              controller: cardSwiperController,
+                              numberOfCardsDisplayed: 3,
+                              onSwipe: (previousIndex, currentIndex,
+                                  direction) async {
+                                if (currentIndex == words.length - 4) {
+                                  await getWords(context, false);
+                                }
+                                setState(() {
+                                  currentWordIndex = currentIndex ?? 0;
+                                });
+                                return true;
+                              },
+                              cardsCount: words.length,
+                              currentWordIndex: currentWordIndex,
+                              loading: context.loaderOverlay.visible,
+                            );
                           },
                         ),
                       ),
