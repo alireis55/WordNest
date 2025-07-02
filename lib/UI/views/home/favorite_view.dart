@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:word_nest/core/databases/database.dart';
+import 'package:word_nest/ui/widgets/custom_favorite_card_widget.dart';
 
 class FavoriteView extends StatefulWidget {
   const FavoriteView({super.key});
@@ -51,29 +52,12 @@ class _FavoriteViewState extends State<FavoriteView> {
         : ListView.builder(
             itemCount: favorites.length,
             itemBuilder: (context, index) {
-              return ClipRRect(
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                  child: Card(
-                    elevation: 0,
-                    color: Colors.white..withAlpha(75),
-                    child: ListTile(
-                      title: Text(
-                          style: const TextStyle(
-                              fontSize: 20, fontWeight: FontWeight.w700),
-                          textAlign: TextAlign.center,
-                          '${favorites[index]['word']}'),
-                      subtitle: Text(
-                          style: TextStyle(
-                              color: favorites[index]['level'] == 'beginner'
-                                  ? Colors.green
-                                  : favorites[index]['level'] == 'intermediate'
-                                      ? Colors.orange
-                                      : Colors.red),
-                          textAlign: TextAlign.center,
-                          '${favorites[index]['level']}'),
-                    ),
-                  ),
+              return Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: CustomFavoriteCardWidget(
+                  word: favorites[index]['word'] ?? '',
+                  level: favorites[index]['level'] ?? '',
                 ),
               );
             },

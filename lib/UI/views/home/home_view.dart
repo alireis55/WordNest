@@ -100,6 +100,9 @@ class _HomeViewState extends State<HomeView> {
           ),
           child: Column(
             children: [
+              const SizedBox(
+                height: 30,
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [

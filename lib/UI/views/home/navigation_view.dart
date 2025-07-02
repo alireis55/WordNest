@@ -35,16 +35,25 @@ class _NavigationViewState extends State<NavigationView> {
     return AppBar(
       backgroundColor: Colors.white.withAlpha(125),
       elevation: 0,
-      title: const Text('Word Nest'),
+      title: const Text(
+        'Word Nest',
+        style: TextStyle(color: Colors.black),
+      ),
       actions: [
         _currentIndex == 0
             ? IconButton(
                 onPressed: _logout,
-                icon: const Icon(Icons.logout),
+                icon: const Icon(
+                  Icons.logout,
+                  color: Colors.black,
+                ),
               )
             : IconButton(
                 onPressed: _clearFavorites,
-                icon: const Icon(Icons.delete),
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.black,
+                ),
               ),
       ],
     );
@@ -59,6 +68,9 @@ class _NavigationViewState extends State<NavigationView> {
       child: BottomNavigationBar(
         elevation: 0,
         backgroundColor: Colors.white.withAlpha(125),
+        selectedItemColor: _currentIndex == 0
+            ? const Color.fromARGB(255, 22, 102, 168)
+            : const Color.fromARGB(255, 182, 167, 38),
         items: [
           BottomNavigationBarItem(
             icon: Icon(
