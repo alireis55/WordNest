@@ -4,12 +4,11 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:word_nest/core/cubits/word_cubit.dart';
 import 'package:word_nest/core/databases/database.dart';
-import 'package:word_nest/ui/widgets/card_widget.dart';
+import 'package:word_nest/ui/widgets/custom_card_widget.dart';
 import 'package:word_nest/core/services/random_word_service.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
 import 'package:logger/logger.dart';
 import 'package:word_nest/ui/widgets/custom_refresh_indicator.dart';
-import 'package:word_nest/ui/utils/device_info.dart';
 import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class HomeView extends StatefulWidget {
@@ -115,7 +114,8 @@ class _HomeViewState extends State<HomeView> {
                                           index,
                                           percentThresholdX,
                                           percentThresholdY) =>
-                                      cardWidget(state[index]),
+                                      CustomCardWidget(
+                                          randomWord: state[index]),
                                   cardsCount: state.length);
                             }
                           },
