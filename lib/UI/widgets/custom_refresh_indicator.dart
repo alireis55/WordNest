@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class MyCustomRefreshIndicator extends StatelessWidget {
   final Widget child;
@@ -32,7 +33,7 @@ class MyCustomRefreshIndicator extends StatelessWidget {
                     child: CircularProgressIndicator(
                       value: controller.isLoading ? null : controller.value,
                       strokeWidth: 5,
-                      color: Colors.black,
+                      color: AppColors.black,
                     ),
                   ),
                 ),

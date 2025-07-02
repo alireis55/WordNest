@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -26,9 +27,9 @@ class CustomButton extends StatelessWidget {
           gradient: color == null
               ? const LinearGradient(
                   colors: [
-                    Color.fromARGB(255, 122, 199, 245),
-                    Color.fromARGB(255, 50, 199, 245),
-                    Color.fromARGB(255, 122, 199, 245)
+                    AppColors.lightBlue,
+                    AppColors.accentBlue,
+                    AppColors.lightBlue
                   ],
                 )
               : null,
@@ -47,7 +48,7 @@ class CustomButton extends StatelessWidget {
           ),
           child: Text(
             text,
-            style: textStyle ?? const TextStyle(color: Colors.white),
+            style: textStyle ?? const TextStyle(color: AppColors.white),
           ),
         ),
       ),

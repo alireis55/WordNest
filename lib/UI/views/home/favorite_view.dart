@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word_nest/core/cubits/favorite_cubit.dart';
 import 'package:word_nest/core/databases/local_storage.dart';
 import 'package:flutter_dismissible_tile/flutter_dismissible_tile.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class FavoriteView extends StatefulWidget {
   const FavoriteView({super.key});
@@ -37,12 +38,12 @@ class _FavoriteViewState extends State<FavoriteView> {
               padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
               rtlBackground: Container(
                 decoration: BoxDecoration(
-                  color: Colors.transparent,
+                  color: AppColors.transparent,
                   borderRadius: BorderRadius.circular(16),
                 ),
                 alignment: Alignment.centerRight,
                 padding: const EdgeInsets.only(right: 24),
-                child: const Icon(Icons.delete, color: Colors.red, size: 28),
+                child: const Icon(Icons.delete, color: AppColors.red, size: 28),
               ),
               onDismissed: (_) => _removeItem(item['id']),
               child: CustomFavoriteCardWidget(

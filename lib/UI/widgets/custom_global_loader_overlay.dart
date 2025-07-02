@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class CustomGlobalLoaderOverlay extends StatelessWidget {
   final Widget child;
@@ -10,10 +11,10 @@ class CustomGlobalLoaderOverlay extends StatelessWidget {
     return GlobalLoaderOverlay(
       overlayWidgetBuilder: (progress) {
         return const CircularProgressIndicator.adaptive(
-          backgroundColor: Colors.white,
+          backgroundColor: AppColors.white,
         );
       },
-      overlayColor: Colors.black.withAlpha(125),
+      overlayColor: AppColors.loaderOverlay,
       overlayHeight: 50,
       overlayWidth: 50,
       child: child,

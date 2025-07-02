@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class CustomSnackBar {
   static void show(BuildContext context, String message,
@@ -11,8 +12,7 @@ class CustomSnackBar {
         ),
         behavior: SnackBarBehavior.floating,
         margin: const EdgeInsets.all(10),
-        backgroundColor:
-            backgroundColor ?? const Color.fromARGB(255, 36, 72, 101),
+        backgroundColor: backgroundColor ?? AppColors.snackbarBlue,
       ),
     );
   }

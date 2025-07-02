@@ -10,6 +10,7 @@ import 'package:word_nest/UI/utils/navigation_helper.dart';
 import 'package:word_nest/ui/widgets/navigation_background.dart';
 import 'package:word_nest/core/cubits/favorite_cubit.dart';
 import 'package:word_nest/core/databases/local_storage.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class NavigationView extends StatefulWidget {
   const NavigationView({super.key});
@@ -44,11 +45,11 @@ class _NavigationViewState extends State<NavigationView> {
 
   PreferredSizeWidget _buildAppBar() {
     return AppBar(
-      backgroundColor: Colors.white.withAlpha(125),
+      backgroundColor: AppColors.white.withAlpha(125),
       elevation: 0,
       title: const Text(
         'Word Nest',
-        style: TextStyle(color: Colors.black),
+        style: TextStyle(color: AppColors.black),
       ),
       actions: [
         _currentIndex == 0
@@ -56,14 +57,14 @@ class _NavigationViewState extends State<NavigationView> {
                 onPressed: _logout,
                 icon: const Icon(
                   Icons.logout,
-                  color: Colors.black,
+                  color: AppColors.black,
                 ),
               )
             : IconButton(
                 onPressed: _clearFavorites,
                 icon: const Icon(
                   Icons.delete,
-                  color: Colors.black,
+                  color: AppColors.black,
                 ),
               ),
       ],
@@ -74,20 +75,19 @@ class _NavigationViewState extends State<NavigationView> {
     return Theme(
       data: Theme.of(context).copyWith(
         splashFactory: NoSplash.splashFactory,
-        highlightColor: Colors.transparent,
+        highlightColor: AppColors.transparent,
       ),
       child: BottomNavigationBar(
         elevation: 0,
-        backgroundColor: Colors.white.withAlpha(125),
-        selectedItemColor: _currentIndex == 0
-            ? const Color.fromARGB(255, 22, 102, 168)
-            : const Color.fromARGB(255, 182, 167, 38),
+        backgroundColor: AppColors.white.withAlpha(125),
+        selectedItemColor:
+            _currentIndex == 0 ? AppColors.darkBlue : AppColors.gold,
         items: [
           BottomNavigationBarItem(
             icon: Icon(
               size: 30,
               _currentIndex == 0 ? Icons.home : Icons.home_outlined,
-              color: const Color.fromARGB(255, 22, 102, 168),
+              color: AppColors.darkBlue,
             ),
             label: 'Home',
           ),
@@ -95,7 +95,7 @@ class _NavigationViewState extends State<NavigationView> {
             icon: Icon(
               size: 30,
               _currentIndex == 1 ? Icons.star : Icons.star_border,
-              color: const Color.fromARGB(255, 182, 167, 38),
+              color: AppColors.gold,
             ),
             label: 'Favorites',
           ),
@@ -111,7 +111,7 @@ class _NavigationViewState extends State<NavigationView> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       extendBody: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: AppColors.transparent,
       appBar: _buildAppBar(),
       body: NavigationBackground(
         child: SafeArea(child: _pages[_currentIndex]),

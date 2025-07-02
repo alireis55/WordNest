@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -64,10 +65,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     final gradient = widget.focusGradient ??
-        const LinearGradient(colors: [
-          Color.fromARGB(255, 122, 199, 245),
-          Color.fromARGB(255, 54, 92, 242)
-        ]);
+        const LinearGradient(
+            colors: [AppColors.lightBlue, AppColors.primaryBlue]);
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       padding: widget.padding,
@@ -107,14 +106,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       : null))
               : widget.suffixIcon,
           filled: true,
-          fillColor: const Color.fromARGB(255, 213, 232, 251),
+          fillColor: AppColors.lightGrey,
           hintText: widget.hintText,
-          hintStyle: const TextStyle(color: Colors.grey),
+          hintStyle: const TextStyle(color: AppColors.grey),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: _isFocused
                 ? BorderSide.none
-                : const BorderSide(color: Colors.grey, width: 1),
+                : const BorderSide(color: AppColors.grey, width: 1),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),

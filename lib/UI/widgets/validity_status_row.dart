@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class ValidityStatusRow extends StatelessWidget {
   final bool isValid;
@@ -16,7 +17,7 @@ class ValidityStatusRow extends StatelessWidget {
       children: [
         Icon(
           isValid ? Icons.check_circle : Icons.cancel,
-          color: isValid ? Colors.green : Colors.red,
+          color: isValid ? AppColors.green : AppColors.red,
           size: 15,
         ),
         const SizedBox(width: 4),

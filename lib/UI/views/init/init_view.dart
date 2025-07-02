@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class InitView extends StatelessWidget {
   const InitView({super.key});
@@ -6,7 +7,7 @@ class InitView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       body: Center(
         child: Image.asset(
           'assets/app_icon.png',

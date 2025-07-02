@@ -13,6 +13,7 @@ import 'package:word_nest/ui/widgets/custom_card_swiper.dart';
 import 'package:word_nest/ui/widgets/custom_fab.dart';
 import 'package:word_nest/ui/widgets/custom_snackbar.dart';
 import 'package:word_nest/core/cubits/favorite_cubit.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -117,7 +118,7 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   Flexible(
                     child: Container(
-                      color: Colors.transparent,
+                      color: AppColors.transparent,
                       height: 300,
                       width: 300,
                       child: SafeArea(
@@ -154,15 +155,15 @@ class _HomeViewState extends State<HomeView> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     CustomFAB(
-                      backgroundColor: const Color.fromARGB(255, 248, 245, 216),
+                      backgroundColor: AppColors.lightYellow,
                       icon: Icons.star,
-                      iconColor: const Color.fromARGB(255, 244, 221, 11),
+                      iconColor: AppColors.yellow,
                       onPressed: () => _addCurrentWordToFavorites(context),
                     ),
                     CustomFAB(
-                      backgroundColor: const Color.fromARGB(255, 185, 219, 247),
+                      backgroundColor: AppColors.lightBlue,
                       icon: Icons.arrow_forward,
-                      iconColor: const Color.fromARGB(255, 9, 136, 241),
+                      iconColor: AppColors.primaryBlue,
                       onPressed: () => _nextWord(),
                     ),
                   ],

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class CustomCardWidget extends StatelessWidget {
   final Word? randomWord;
@@ -17,9 +18,9 @@ class CustomCardWidget extends StatelessWidget {
   const CustomCardWidget(
       {super.key,
       required this.randomWord,
-      this.titleColor = Colors.red,
-      this.contentColor = const Color.fromARGB(255, 31, 31, 31),
-      this.borderColor = const Color.fromARGB(255, 255, 247, 247),
+      this.titleColor = AppColors.red,
+      this.contentColor = AppColors.cardContent,
+      this.borderColor = AppColors.borderGrey,
       this.borderRadius = 20,
       this.fontSize = 18,
       this.borderWidth = 3,
@@ -96,14 +97,17 @@ class CustomCardWidget extends StatelessWidget {
   Widget _buildLevel(String? level) {
     Color color;
     switch (level) {
-      case 'A1' || 'A2':
-        color = Colors.green;
+      case 'A1':
+      case 'A2':
+        color = AppColors.green;
         break;
-      case 'B1' || 'B2':
-        color = Colors.orange;
+      case 'B1':
+      case 'B2':
+        color = AppColors.orange;
         break;
-      case 'C1' || 'C2':
-        color = const Color.fromARGB(255, 102, 13, 6);
+      case 'C1':
+      case 'C2':
+        color = AppColors.errorRed;
         break;
       default:
         color = contentColor;

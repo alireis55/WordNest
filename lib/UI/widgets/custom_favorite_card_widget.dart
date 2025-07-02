@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class CustomFavoriteCardWidget extends StatelessWidget {
   final String word;
@@ -18,9 +19,9 @@ class CustomFavoriteCardWidget extends StatelessWidget {
     super.key,
     required this.word,
     required this.level,
-    this.titleColor = const Color.fromARGB(255, 36, 72, 101),
-    this.levelColor = const Color.fromARGB(255, 31, 31, 31),
-    this.borderColor = const Color.fromARGB(255, 255, 247, 247),
+    this.titleColor = AppColors.cardTitle,
+    this.levelColor = AppColors.cardContent,
+    this.borderColor = AppColors.borderGrey,
     this.borderRadius = 20,
     this.fontSize = 20,
     this.borderWidth = 3,
@@ -85,15 +86,15 @@ class CustomFavoriteCardWidget extends StatelessWidget {
     switch (level) {
       case 'A1':
       case 'A2':
-        color = Colors.green;
+        color = AppColors.green;
         break;
       case 'B1':
       case 'B2':
-        color = Colors.orange;
+        color = AppColors.orange;
         break;
       case 'C1':
       case 'C2':
-        color = const Color.fromARGB(255, 102, 13, 6);
+        color = AppColors.errorRed;
         break;
       default:
         color = levelColor;

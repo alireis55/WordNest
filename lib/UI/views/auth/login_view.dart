@@ -12,6 +12,7 @@ import 'package:word_nest/ui/views/auth/auth_view.dart';
 import 'package:word_nest/core/errors/custom_exception.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word_nest/UI/utils/navigation_helper.dart';
+import 'package:word_nest/ui/utils/app_colors.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -90,8 +91,8 @@ class _LoginViewState extends State<LoginView> {
               Row(
                 children: [
                   Checkbox(
-                    checkColor: Colors.white,
-                    activeColor: Colors.green,
+                    checkColor: AppColors.white,
+                    activeColor: AppColors.green,
                     value: rememberMe,
                     onChanged: (bool? value) {
                       setState(() {
