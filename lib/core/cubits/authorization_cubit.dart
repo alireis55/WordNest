@@ -11,11 +11,9 @@ class AuthorizationCubit extends Cubit<bool> {
 
   Future<void> login(String token) async {
     await SharedPrefsHelper.setToken(token);
-    emit(true);
   }
 
   Future<void> logout() async {
     await SharedPrefsHelper.deleteToken();
-    emit(false);
   }
 }

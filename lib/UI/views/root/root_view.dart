@@ -4,6 +4,7 @@ import 'package:word_nest/core/cubits/connection_cubit.dart';
 import 'package:word_nest/ui/views/auth/auth_view.dart';
 import 'package:word_nest/ui/views/auth/not_connection_view.dart';
 import 'package:word_nest/ui/views/home/navigation_view.dart';
+import 'package:word_nest/ui/views/init/init_view.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class RootView extends StatefulWidget {
@@ -25,14 +26,18 @@ class _RootViewState extends State<RootView> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: BlocBuilder<ConnectionCubit, bool>(
+      body: BlocBuilder<ConnectionCubit, bool?>(
         builder: (context, isConnected) {
-          if (!isConnected) {
+          if (isConnected == false) {
             return const NotConnectionView();
+          } else if (isConnected == null) {
+            return const InitView();
           } else {
-            return BlocBuilder<AuthorizationCubit, bool>(
+            return BlocBuilder<AuthorizationCubit, bool?>(
               builder: (context, authorized) {
-                if (authorized) {
+                if (authorized == null) {
+                  return const InitView();
+                } else if (authorized) {
                   return const NavigationView();
                 } else {
                   return const AuthView();

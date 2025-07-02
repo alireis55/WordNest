@@ -25,7 +25,7 @@ class CustomCardSwiper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (loading) {
+    if (loading || words.isEmpty) {
       return CardSwiper(
         onSwipe: onSwipe,
         controller: controller,

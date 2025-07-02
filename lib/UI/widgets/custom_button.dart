@@ -37,6 +37,14 @@ class CustomButton extends StatelessWidget {
         ),
         child: TextButton(
           onPressed: onPressed,
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(borderRadius),
+              ),
+            ),
+            //overlayColor: WidgetStateProperty.all(Colors.transparent),
+          ),
           child: Text(
             text,
             style: textStyle ?? const TextStyle(color: Colors.white),

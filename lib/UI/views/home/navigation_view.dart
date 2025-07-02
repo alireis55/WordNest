@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'package:word_nest/core/cubits/word_cubit.dart';
 import 'package:word_nest/ui/views/home/favorite_View.dart';
 import 'package:word_nest/ui/views/home/home_view.dart';
@@ -29,6 +30,7 @@ class _NavigationViewState extends State<NavigationView> {
   }
 
   void _logout() async {
+    context.loaderOverlay.progress(true);
     await context.read<AuthorizationCubit>().logout();
     await LocalStorage.clearFavoriteTable();
     if (mounted) {

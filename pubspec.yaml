@@ -20,6 +20,8 @@ dependencies:
   loader_overlay: ^5.0.0
   logger: ^2.6.0
   custom_refresh_indicator: ^4.0.1
+  flutter_native_splash: ^2.4.6
+  flutter_launcher_icons: ^0.14.4
 
 dev_dependencies:
   flutter_test:
@@ -27,6 +29,20 @@ dev_dependencies:
   flutter_lints: ^4.0.0      
   json_serializable: ^6.9.0  #for json to dart op exact opposite
   build_runner: ^2.4.6       #for json to dart or exact opposite
+
+flutter_native_splash:
+  android: true
+  ios: true
+  image: assets/app_icon.png
+  color: "#FFFFFF"
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path_android: assets/app_icon.png
+  image_path_ios: assets/app_icon.png
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: assets/app_icon.png
 
 flutter:
   uses-material-design: true

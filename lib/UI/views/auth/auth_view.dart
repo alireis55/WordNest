@@ -28,12 +28,6 @@ class _AuthViewState extends State<AuthView> {
   }
 
   @override
-  void dispose() {
-    AuthView.pageController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
