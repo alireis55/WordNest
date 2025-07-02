@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:word_nest/core/databases/database.dart';
+import 'package:word_nest/core/cubits/word_cubit.dart';
 import 'package:word_nest/ui/views/home/favorite_View.dart';
 import 'package:word_nest/ui/views/home/home_view.dart';
 import 'package:word_nest/ui/views/root/root_view.dart';
@@ -7,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word_nest/core/cubits/authorization_cubit.dart';
 import 'package:word_nest/UI/utils/navigation_helper.dart';
 import 'package:word_nest/ui/widgets/navigation_background.dart';
+import 'package:word_nest/core/cubits/favorite_cubit.dart';
+import 'package:word_nest/core/databases/local_storage.dart';
 
 class NavigationView extends StatefulWidget {
   const NavigationView({super.key});
@@ -20,12 +22,19 @@ class _NavigationViewState extends State<NavigationView> {
   int _currentIndex = 0;
 
   Future<void> _clearFavorites() async {
-    await clearFavoriteTable();
-    FavoriteView.loading.value = true;
+    await LocalStorage.clearFavoriteTable();
+    if (mounted) {
+      context.read<FavoriteCubit>().clearFavorites();
+    }
   }
 
   void _logout() async {
     await context.read<AuthorizationCubit>().logout();
+    await LocalStorage.clearFavoriteTable();
+    if (mounted) {
+      context.read<FavoriteCubit>().clearFavorites();
+      context.read<WordCubit>().clearWords();
+    }
     if (mounted) {
       NavigationHelper.pushReplacement(context, const RootView());
     }

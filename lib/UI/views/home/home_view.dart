@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:word_nest/core/cubits/word_cubit.dart';
-import 'package:word_nest/core/databases/database.dart';
+import 'package:word_nest/core/databases/local_storage.dart';
 import 'package:word_nest/core/services/random_word_service.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
 import 'package:logger/logger.dart';
@@ -12,6 +12,7 @@ import 'package:word_nest/ui/utils/app_sizes.dart';
 import 'package:word_nest/ui/widgets/custom_card_swiper.dart';
 import 'package:word_nest/ui/widgets/custom_fab.dart';
 import 'package:word_nest/ui/widgets/custom_snackbar.dart';
+import 'package:word_nest/core/cubits/favorite_cubit.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -30,7 +31,7 @@ class _HomeViewState extends State<HomeView> {
     if (context.read<WordCubit>().state.isEmpty) {
       getWords(context, true);
     }
-    createDatabase();
+    LocalStorage.createDatabase();
   }
 
   Future<void> getWords(BuildContext content, bool showCircularBar) async {
@@ -69,7 +70,15 @@ class _HomeViewState extends State<HomeView> {
 
   void _addCurrentWordToFavorites(BuildContext context) async {
     final currentWord = context.read<WordCubit>().state[currentWordIndex];
-    await insertFavorite(ResponseRandomWordModel(word: currentWord));
+    await LocalStorage.insertFavorite(
+        ResponseRandomWordModel(word: currentWord));
+    context.read<FavoriteCubit>().addFavorite({
+      'word': currentWord.word,
+      'level': currentWord.level,
+      'meaning': currentWord.meaning,
+      'pronunciation': currentWord.pronunciation,
+      'example': currentWord.example,
+    });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       CustomSnackBar.show(
         context,
