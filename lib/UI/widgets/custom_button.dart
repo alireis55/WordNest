@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -20,8 +21,8 @@ class CustomButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: MediaQuery.of(context).size.width - 30,
-      height: 54,
+      width: double.infinity,
+      height: AppSizes.buttonHeight,
       child: Container(
         decoration: BoxDecoration(
           gradient: color == null
@@ -34,17 +35,17 @@ class CustomButton extends StatelessWidget {
                 )
               : null,
           color: color,
-          borderRadius: BorderRadius.circular(borderRadius),
+          borderRadius: BorderRadius.circular(AppSizes.buttonBorderRadius),
         ),
         child: TextButton(
           onPressed: onPressed,
           style: ButtonStyle(
             shape: WidgetStateProperty.all(
               RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadius),
+                borderRadius:
+                    BorderRadius.circular(AppSizes.buttonBorderRadius),
               ),
             ),
-            //overlayColor: WidgetStateProperty.all(Colors.transparent),
           ),
           child: Text(
             text,

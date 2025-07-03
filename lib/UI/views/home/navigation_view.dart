@@ -11,6 +11,7 @@ import 'package:word_nest/ui/widgets/navigation_background.dart';
 import 'package:word_nest/core/cubits/favorite_cubit.dart';
 import 'package:word_nest/core/databases/local_storage.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class NavigationView extends StatefulWidget {
   const NavigationView({super.key});
@@ -85,7 +86,7 @@ class _NavigationViewState extends State<NavigationView> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(
-              size: 30,
+              size: AppSizes.iconSizeMedium,
               _currentIndex == 0 ? Icons.home : Icons.home_outlined,
               color: AppColors.darkBlue,
             ),
@@ -93,7 +94,7 @@ class _NavigationViewState extends State<NavigationView> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              size: 30,
+              size: AppSizes.iconSizeMedium,
               _currentIndex == 1 ? Icons.star : Icons.star_border,
               color: AppColors.gold,
             ),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class CustomFavoriteCardWidget extends StatelessWidget {
   final String word;
@@ -22,10 +23,10 @@ class CustomFavoriteCardWidget extends StatelessWidget {
     this.titleColor = AppColors.cardTitle,
     this.levelColor = AppColors.cardContent,
     this.borderColor = AppColors.borderGrey,
-    this.borderRadius = 20,
-    this.fontSize = 20,
-    this.borderWidth = 3,
-    this.blurSigma = 20,
+    this.borderRadius = AppSizes.cardBorderRadius,
+    this.fontSize = AppSizes.fontSizeXLarge,
+    this.borderWidth = AppSizes.cardBorderWidth,
+    this.blurSigma = AppSizes.cardBlurSigma,
     this.backgroundColor,
     this.padding,
   });
@@ -33,12 +34,14 @@ class CustomFavoriteCardWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+      borderRadius:
+          const BorderRadius.all(Radius.circular(AppSizes.cardBorderRadius)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+            borderRadius: const BorderRadius.all(
+                Radius.circular(AppSizes.cardBorderRadius)),
             border: Border.all(
               color: borderColor.withAlpha(75),
               width: borderWidth,
@@ -53,16 +56,19 @@ class CustomFavoriteCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          padding: padding ??
-              const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildTitle(word),
-              const SizedBox(height: 8),
-              _buildLevel(level),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(AppSizes.cardPadding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _buildTitle(word),
+                const SizedBox(
+                  height: AppSizes.spaceSmall,
+                ),
+                _buildLevel(level),
+              ],
+            ),
           ),
         ),
       ),

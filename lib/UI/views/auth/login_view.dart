@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/ui/utils/device_info.dart';
 import 'package:word_nest/ui/views/home/navigation_view.dart';
 import 'package:word_nest/core/cubits/cache_cubit.dart';
 import 'package:word_nest/core/models/request/request_login_model.dart';
@@ -13,6 +14,7 @@ import 'package:word_nest/core/errors/custom_exception.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word_nest/UI/utils/navigation_helper.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -59,92 +61,108 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 15),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                height: MediaQuery.of(context).size.height * 0.18,
-              ),
-              const SizedBox(
-                  width: 508 * 0.3,
-                  height: 417 * 0.3,
-                  child: Image(image: AssetImage('assets/logo.png'))),
-              const SizedBox(height: 20),
-              CustomTextField(
-                controller: emailController,
-                hintText: 'E-mail',
-                icon: const Icon(Icons.email),
-                keyboardType: TextInputType.emailAddress,
-              ),
-              const SizedBox(height: 20),
-              CustomTextField(
-                controller: passwordController,
-                hintText: 'Password',
-                icon: const Icon(Icons.lock),
-                isPasswordTextField: true,
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  Checkbox(
-                    checkColor: AppColors.white,
-                    activeColor: AppColors.green,
-                    value: rememberMe,
-                    onChanged: (bool? value) {
-                      setState(() {
-                        rememberMe = value ?? false;
-                      });
+    return LayoutBuilder(
+      builder: (context, constraints) => SingleChildScrollView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: EdgeInsets.only(
+            left: AppSizes.singleChildScrollPadding,
+            right: AppSizes.singleChildScrollPadding,
+            bottom: DeviceInfo(context).keyboardHeight * 0.75),
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: constraints.maxHeight,
+          ),
+          child: IntrinsicHeight(
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  const SizedBox(
+                    height: AppSizes.spaceMedium,
+                  ),
+                  const SizedBox(
+                    width: AppSizes.logoSize,
+                    height: AppSizes.logoSize,
+                    child: Image(image: AssetImage('assets/logo.png')),
+                  ),
+                  const SizedBox(height: AppSizes.spaceMedium),
+                  CustomTextField(
+                    controller: emailController,
+                    hintText: 'E-mail',
+                    icon: const Icon(Icons.email),
+                    keyboardType: TextInputType.emailAddress,
+                  ),
+                  const SizedBox(height: AppSizes.spaceMedium),
+                  CustomTextField(
+                    controller: passwordController,
+                    hintText: 'Password',
+                    icon: const Icon(Icons.lock),
+                    isPasswordTextField: true,
+                  ),
+                  const SizedBox(
+                    height: AppSizes.spaceMedium,
+                  ),
+                  Row(
+                    children: [
+                      Checkbox(
+                        checkColor: AppColors.white,
+                        activeColor: AppColors.green,
+                        value: rememberMe,
+                        onChanged: (bool? value) {
+                          setState(() {
+                            rememberMe = value ?? false;
+                          });
+                        },
+                      ),
+                      const Text("Remember me")
+                    ],
+                  ),
+                  const SizedBox(
+                    height: AppSizes.spaceMedium,
+                  ),
+                  CustomButton(
+                    text: 'Login',
+                    onPressed: () async {
+                      FocusScope.of(context).unfocus();
+                      if (passwordController.text.isNotEmpty &&
+                          emailController.text.isNotEmpty) {
+                        await _login();
+                      } else {
+                        CustomSnackBar.show(context, "please enter all fields");
+                      }
                     },
                   ),
-                  const Text("Remember me")
+                  const SizedBox(
+                    height: AppSizes.spaceMedium,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't you have an account?"),
+                      TextButton(
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          AuthView.animateToPage(1);
+                        },
+                        child: const Text(
+                          "Sign up",
+                          style: TextStyle(
+                            decoration: TextDecoration.underline,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: AppSizes.spaceMedium,
+                  ),
                 ],
               ),
-              const SizedBox(height: 20),
-              CustomButton(
-                text: 'Login',
-                onPressed: () async {
-                  FocusScope.of(context).unfocus();
-                  if (passwordController.text.isNotEmpty &&
-                      emailController.text.isNotEmpty) {
-                    await _login();
-                  } else {
-                    CustomSnackBar.show(context, "please enter all fields");
-                  }
-                },
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text("Don't you have an account?"),
-                  TextButton(
-                    onPressed: () {
-                      AuthView.animateToPage(1);
-                    },
-                    child: const Text(
-                      "Sign up",
-                      style: TextStyle(
-                        decoration: TextDecoration.underline,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  )
-                ],
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).viewInsets.bottom > 0
-                    ? MediaQuery.of(context).viewInsets.bottom +
-                        MediaQuery.of(context).size.height * 0.01
-                    : 0,
-              )
-            ],
+            ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

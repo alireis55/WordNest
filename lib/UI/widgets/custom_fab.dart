@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class CustomFAB extends StatelessWidget {
   final VoidCallback onPressed;
@@ -13,16 +14,16 @@ class CustomFAB extends StatelessWidget {
     required this.icon,
     required this.backgroundColor,
     required this.iconColor,
-    this.size = 35,
+    this.size = AppSizes.fabIconSize,
   });
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       heroTag: null,
-      elevation: 7,
-      focusElevation: 0,
-      highlightElevation: 0,
+      elevation: AppSizes.fabElevation,
+      focusElevation: AppSizes.fabFocusElevation,
+      highlightElevation: AppSizes.fabHighLightElevation,
       backgroundColor: backgroundColor,
       onPressed: onPressed,
       child: Icon(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class CustomGlobalLoaderOverlay extends StatelessWidget {
   final Widget child;
@@ -15,8 +16,8 @@ class CustomGlobalLoaderOverlay extends StatelessWidget {
         );
       },
       overlayColor: AppColors.loaderOverlay,
-      overlayHeight: 50,
-      overlayWidth: 50,
+      overlayHeight: AppSizes.iconSizeLarge,
+      overlayWidth: AppSizes.iconSizeLarge,
       child: child,
     );
   }

@@ -5,6 +5,7 @@ import 'package:word_nest/core/cubits/favorite_cubit.dart';
 import 'package:word_nest/core/databases/local_storage.dart';
 import 'package:flutter_dismissible_tile/flutter_dismissible_tile.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class FavoriteView extends StatefulWidget {
   const FavoriteView({super.key});
@@ -35,15 +36,20 @@ class _FavoriteViewState extends State<FavoriteView> {
             final item = favorites[index];
             return DismissibleTile(
               key: ValueKey(item['id']),
-              padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+              padding: const EdgeInsets.symmetric(
+                  vertical: AppSizes.dismissibleCardVerticalPadding,
+                  horizontal: AppSizes.dismissibleCardHerizontalPadding),
               rtlBackground: Container(
                 decoration: BoxDecoration(
                   color: AppColors.transparent,
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius:
+                      BorderRadius.circular(AppSizes.dismissibleRadius),
                 ),
                 alignment: Alignment.centerRight,
-                padding: const EdgeInsets.only(right: 24),
-                child: const Icon(Icons.delete, color: AppColors.red, size: 28),
+                padding: const EdgeInsets.only(
+                    right: AppSizes.dismissiblePaddingRight),
+                child: const Icon(Icons.delete,
+                    color: AppColors.red, size: AppSizes.dismissibleIconSize),
               ),
               onDismissed: (_) => _removeItem(item['id']),
               child: CustomFavoriteCardWidget(

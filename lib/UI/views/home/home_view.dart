@@ -111,7 +111,7 @@ class _HomeViewState extends State<HomeView> {
           child: Column(
             children: [
               const SizedBox(
-                height: 30,
+                height: AppSizes.spaceLarge,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -119,8 +119,8 @@ class _HomeViewState extends State<HomeView> {
                   Flexible(
                     child: Container(
                       color: AppColors.transparent,
-                      height: 300,
-                      width: 300,
+                      height: AppSizes.cardSwipperSize,
+                      width: AppSizes.cardSwipperSize,
                       child: SafeArea(
                         child: BlocBuilder<WordCubit, List<Word>>(
                           builder: (context, words) {
@@ -149,25 +149,25 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 50),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    CustomFAB(
-                      backgroundColor: AppColors.lightYellow,
-                      icon: Icons.star,
-                      iconColor: AppColors.yellow,
-                      onPressed: () => _addCurrentWordToFavorites(context),
-                    ),
-                    CustomFAB(
-                      backgroundColor: AppColors.lightBlue,
-                      icon: Icons.arrow_forward,
-                      iconColor: AppColors.primaryBlue,
-                      onPressed: () => _nextWord(),
-                    ),
-                  ],
-                ),
+              const SizedBox(
+                height: AppSizes.spaceXXXLarge,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  CustomFAB(
+                    backgroundColor: AppColors.lightYellow,
+                    icon: Icons.star,
+                    iconColor: AppColors.yellow,
+                    onPressed: () => _addCurrentWordToFavorites(context),
+                  ),
+                  CustomFAB(
+                    backgroundColor: AppColors.lightBlue,
+                    icon: Icons.arrow_forward,
+                    iconColor: AppColors.primaryBlue,
+                    onPressed: () => _nextWord(),
+                  ),
+                ],
               )
             ],
           ),

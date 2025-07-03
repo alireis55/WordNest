@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class CustomSnackBar {
   static void show(BuildContext context, String message,
@@ -8,10 +9,9 @@ class CustomSnackBar {
       SnackBar(
         content: Text(message),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
+          borderRadius: BorderRadius.circular(AppSizes.snackBarRadius),
         ),
         behavior: SnackBarBehavior.floating,
-        margin: const EdgeInsets.all(10),
         backgroundColor: backgroundColor ?? AppColors.snackbarBlue,
       ),
     );

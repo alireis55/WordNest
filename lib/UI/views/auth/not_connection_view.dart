@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:word_nest/core/cubits/connection_cubit.dart';
 import 'package:word_nest/ui/widgets/custom_button.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class NotConnectionView extends StatelessWidget {
   const NotConnectionView({super.key});
@@ -11,24 +12,35 @@ class NotConnectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(32.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(
+              horizontal: AppSizes.singleChildScrollPadding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(Icons.wifi_off, size: 80, color: AppColors.grey),
-              const SizedBox(height: 24),
+              const Icon(Icons.wifi_off,
+                  size: AppSizes.iconSizeLarge, color: AppColors.grey),
+              const SizedBox(
+                height: AppSizes.spaceMedium,
+              ),
               const Text(
                 'No Connection',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                    fontSize: AppSizes.fontSizeXLarge,
+                    fontWeight: FontWeight.bold),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(
+                height: AppSizes.spaceMedium,
+              ),
               const Text(
                 'Please check your internet connection',
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, color: AppColors.grey),
+                style: TextStyle(
+                    fontSize: AppSizes.fontSizeLarge, color: AppColors.grey),
               ),
-              const SizedBox(height: 32),
+              const SizedBox(
+                height: AppSizes.spaceMedium,
+              ),
               CustomButton(
                 text: 'Retry',
                 onPressed: () async {

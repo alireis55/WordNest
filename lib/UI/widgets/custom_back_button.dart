@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
+import 'package:word_nest/ui/utils/device_info.dart';
 
 class CustomBackButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -15,8 +17,8 @@ class CustomBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: top ?? MediaQuery.of(context).padding.top,
-      left: left ?? 20,
+      top: top ?? DeviceInfo(context).statusBarHeight,
+      left: left ?? AppSizes.spaceMedium,
       child: IconButton(
         onPressed: onPressed ??
             () {

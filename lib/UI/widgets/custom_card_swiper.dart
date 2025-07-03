@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
 import 'package:word_nest/ui/widgets/custom_card_widget.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class CustomCardSwiper extends StatelessWidget {
   final List<Word> words;
@@ -29,8 +30,8 @@ class CustomCardSwiper extends StatelessWidget {
       return CardSwiper(
         onSwipe: onSwipe,
         controller: controller,
-        backCardOffset: const Offset(30, 30),
-        padding: const EdgeInsets.all(5),
+        backCardOffset: const Offset(
+            AppSizes.cardSwipperOffset, AppSizes.cardSwipperOffset),
         duration: const Duration(milliseconds: 350),
         numberOfCardsDisplayed: 3,
         cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>
@@ -48,8 +49,8 @@ class CustomCardSwiper extends StatelessWidget {
     return CardSwiper(
       onSwipe: onSwipe,
       controller: controller,
-      backCardOffset: const Offset(30, 30),
-      padding: const EdgeInsets.all(5),
+      backCardOffset:
+          const Offset(AppSizes.cardSwipperOffset, AppSizes.cardSwipperOffset),
       duration: const Duration(milliseconds: 350),
       numberOfCardsDisplayed: numberOfCardsDisplayed,
       cardBuilder: (context, index, percentThresholdX, percentThresholdY) =>

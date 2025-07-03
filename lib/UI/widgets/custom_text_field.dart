@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -24,7 +25,7 @@ class CustomTextField extends StatefulWidget {
     this.suffixIcon,
     this.onChanged,
     this.keyboardType,
-    this.padding = const EdgeInsets.all(3),
+    this.padding = const EdgeInsets.all(AppSizes.textFieldPadding),
     this.focusGradient,
     this.isPasswordTextField = false,
   });
@@ -72,7 +73,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
       padding: widget.padding,
       decoration: BoxDecoration(
         gradient: _isFocused ? gradient : null,
-        borderRadius: BorderRadius.circular(30),
+        borderRadius: BorderRadius.circular(AppSizes.textFieldBorderRadius),
       ),
       child: TextFormField(
         controller: widget.controller,
@@ -110,13 +111,15 @@ class _CustomTextFieldState extends State<CustomTextField> {
           hintText: widget.hintText,
           hintStyle: const TextStyle(color: AppColors.grey),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(AppSizes.textFieldBorderRadius),
             borderSide: _isFocused
                 ? BorderSide.none
-                : const BorderSide(color: AppColors.grey, width: 1),
+                : const BorderSide(
+                    color: AppColors.grey,
+                    width: AppSizes.textFieldBorderWidth),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(30),
+            borderRadius: BorderRadius.circular(AppSizes.textFieldBorderRadius),
             borderSide: BorderSide.none,
           ),
         ),

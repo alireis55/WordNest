@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:word_nest/core/models/response/response_random_word_model.dart';
 import 'package:word_nest/ui/utils/app_colors.dart';
+import 'package:word_nest/ui/utils/app_sizes.dart';
 
 class CustomCardWidget extends StatelessWidget {
   final Word? randomWord;
@@ -21,22 +22,24 @@ class CustomCardWidget extends StatelessWidget {
       this.titleColor = AppColors.red,
       this.contentColor = AppColors.cardContent,
       this.borderColor = AppColors.borderGrey,
-      this.borderRadius = 20,
-      this.fontSize = 18,
-      this.borderWidth = 3,
-      this.blurSigma = 50,
+      this.borderRadius = AppSizes.cardBorderRadius,
+      this.fontSize = AppSizes.cardTextSize,
+      this.borderWidth = AppSizes.cardBorderWidth,
+      this.blurSigma = AppSizes.cardBlurSigma,
       this.backgroundColor,
       this.padding});
 
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+      borderRadius:
+          const BorderRadius.all(Radius.circular(AppSizes.cardBorderRadius)),
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(borderRadius)),
+            borderRadius: const BorderRadius.all(
+                Radius.circular(AppSizes.cardBorderRadius)),
             border: Border.all(
               color: borderColor.withAlpha(75),
               width: borderWidth,
@@ -51,23 +54,30 @@ class CustomCardWidget extends StatelessWidget {
               ),
             ],
           ),
-          padding: padding ??
-              const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _buildTitle('Word'),
-              _buildContent(randomWord?.word ?? ''),
-              _buildTitle('Pronunciation'),
-              _buildContent(randomWord?.pronunciation ?? ''),
-              _buildTitle('Meaning'),
-              _buildContent(randomWord?.meaning ?? ''),
-              _buildTitle('Level'),
-              _buildLevel(randomWord?.level),
-              _buildTitle('Example'),
-              _buildContent(randomWord?.example ?? ''),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(AppSizes.cardPadding),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                const Spacer(),
+                _buildTitle('Word'),
+                _buildContent(randomWord?.word ?? ''),
+                const Spacer(),
+                _buildTitle('Pronunciation'),
+                _buildContent(randomWord?.pronunciation ?? ''),
+                const Spacer(),
+                _buildTitle('Meaning'),
+                _buildContent(randomWord?.meaning ?? ''),
+                const Spacer(),
+                _buildTitle('Level'),
+                _buildLevel(randomWord?.level),
+                const Spacer(),
+                _buildTitle('Example'),
+                _buildContent(randomWord?.example ?? ''),
+                const Spacer(),
+              ],
+            ),
           ),
         ),
       ),
@@ -84,13 +94,10 @@ class CustomCardWidget extends StatelessWidget {
   }
 
   Widget _buildContent(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
-      child: Text(
-        text,
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: fontSize, color: contentColor),
-      ),
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: fontSize, color: contentColor),
     );
   }
 
