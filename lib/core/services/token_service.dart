@@ -8,10 +8,10 @@ class TokenService {
     final cacheToken = context.read<CacheCubit>().state;
     final savedToken = await SharedPrefsHelper.getToken();
     if (savedToken != null && savedToken.isNotEmpty) {
-      'saved tokne has returned';
+      //saved tokne has returned
       return savedToken;
     } else {
-      'cache token has returned';
+      //cache token has returned
       return cacheToken as String;
     }
   }
